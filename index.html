@@ -1,0 +1,2775 @@
+<!DOCTYPE html>
+<html class="h-full" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Mascote Lumi • Assistente Virtual Interativo | Kayck Lima</title>
+  <meta name="description" content="Lumi é um mascote assistente virtual interativo criado por Kayck Lima. Um projeto de portfólio demonstrando engenharia frontend avançada com CSS puro, animações, física e sistema de emoções." />
+  <meta name="author" content="Kayck Lima" />
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mascote Lumi • Assistente Virtual Interativo" />
+  <meta property="og:description" content="Mascote interativo com 14 estados emocionais, eye tracking, drag & drop com física e console REPL — 100% vanilla JS + CSS puro. Criado por Kayck Lima." />
+  <meta property="og:url" content="https://github.com/kayck-lima" />
+  <meta name="twitter:card" content="summary" />
+  <!-- Emoji Favicon (no external file needed) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>" />
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: 'var(--brand-50)',
+              100: 'var(--brand-100)',
+              200: 'var(--brand-200)',
+              300: 'var(--brand-300)',
+              400: 'var(--brand-400)',
+              500: 'var(--brand-500)',
+              600: 'var(--brand-600)',
+              700: 'var(--brand-700)',
+              glow: 'var(--brand-glow)',
+            }
+          },
+          animation: {
+            'float-slow': 'floatSlow 4.5s ease-in-out infinite',
+            'float-platform': 'floatPlatform 3s ease-in-out infinite',
+            'bounce-mascot': 'mascotBounce 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
+            'shake-head': 'mascotShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both',
+            'sleep-breathe': 'sleepBreath 3.5s ease-in-out infinite',
+            'zzz-float': 'zzzFloat 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+            'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+            'dizzy-spin': 'dizzySpin 1.8s linear infinite',
+            'dizzy-wobble': 'dizzyWobble 0.8s ease-in-out infinite alternate',
+            'angry-tremble': 'angryTremble 0.12s ease-in-out infinite',
+            'steam-puff': 'steamPuff 1.2s ease-out infinite',
+            'heart-pop': 'heartPop 1.6s ease-in-out infinite',
+          },
+          keyframes: {
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-14px) rotate(1.8deg)' },
+            },
+            floatPlatform: {
+              '0%, 100%': { transform: 'scale(1)', opacity: '0.7' },
+              '50%': { transform: 'scale(1.15)', opacity: '0.95' },
+            },
+            mascotBounce: {
+              '0%, 100%': { transform: 'translateY(0) scale(1)' },
+              '25%': { transform: 'translateY(-28px) scale(1.12, 0.9)' },
+              '50%': { transform: 'translateY(-10px) scale(0.94, 1.06)' },
+              '75%': { transform: 'translateY(-20px) scale(1.06, 0.96)' },
+            },
+            mascotShake: {
+              '0%, 100%': { transform: 'translateX(0) rotate(0deg)' },
+              '15%': { transform: 'translateX(-16px) rotate(-10deg)' },
+              '35%': { transform: 'translateX(14px) rotate(8deg)' },
+              '55%': { transform: 'translateX(-10px) rotate(-6deg)' },
+              '75%': { transform: 'translateX(8px) rotate(4deg)' },
+            },
+            sleepBreath: {
+              '0%, 100%': { transform: 'scale(1) translateY(0)' },
+              '50%': { transform: 'scale(0.96, 1.03) translateY(3px)' }
+            },
+            zzzFloat: {
+              '0%': { opacity: '0', transform: 'translate(0, 0) scale(0.6)' },
+              '40%': { opacity: '0.9', transform: 'translate(8px, -15px) scale(1)' },
+              '80%': { opacity: '0.8', transform: 'translate(18px, -32px) scale(1.15)' },
+              '100%': { opacity: '0', transform: 'translate(25px, -45px) scale(0.8)' }
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.8', transform: 'scale(1.08)' }
+            },
+            dizzySpin: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' }
+            },
+            dizzyWobble: {
+              '0%': { transform: 'rotate(-10deg) scale(0.96)' },
+              '100%': { transform: 'rotate(10deg) scale(1.04)' }
+            },
+            angryTremble: {
+              '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+              '25%': { transform: 'translate(-2px, 1.5px) rotate(-1.5deg)' },
+              '75%': { transform: 'translate(2px, -1.5px) rotate(1.5deg)' }
+            },
+            steamPuff: {
+              '0%': { opacity: '0', transform: 'translateY(0) scale(0.6)' },
+              '40%': { opacity: '0.8', transform: 'translateY(-8px) scale(1.1)' },
+              '100%': { opacity: '0', transform: 'translateY(-18px) scale(1.4)' }
+            },
+            heartPop: {
+              '0%, 100%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(1.22)' }
+            },
+            laughGiggle: {
+              '0%': { transform: 'translateY(0) rotate(-2deg)' },
+              '100%': { transform: 'translateY(-6px) rotate(2deg)' },
+            },
+            tearFlyL: {
+              '0%': { opacity: '0', transform: 'translate(0, 0) scale(0.5)' },
+              '30%': { opacity: '1', transform: 'translate(-8px, -4px) scale(1)' },
+              '100%': { opacity: '0', transform: 'translate(-24px, 12px) scale(1.25)' },
+            },
+            tearFlyR: {
+              '0%': { opacity: '0', transform: 'translate(0, 0) scale(0.5)' },
+              '30%': { opacity: '1', transform: 'translate(8px, -4px) scale(1)' },
+              '100%': { opacity: '0', transform: 'translate(24px, 12px) scale(1.25)' },
+            },
+            mindblownBurst: {
+              '0%': { transform: 'scale(0.8)', opacity: '0.3' },
+              '50%': { transform: 'scale(1.4)', opacity: '0.9' },
+              '100%': { transform: 'scale(1.75)', opacity: '0' },
+            },
+            indignantBob: {
+              '0%': { transform: 'translateY(0) rotate(-3deg)' },
+              '100%': { transform: 'translateY(-4px) rotate(3deg)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style data-purpose="theme-palettes">
+    :root {
+      /* Sapphire Theme (Default) */
+      --brand-50: #eff6ff;
+      --brand-100: #dbeafe;
+      --brand-200: #bfdbfe;
+      --brand-300: #93c5fd;
+      --brand-400: #60a5fa;
+      --brand-500: #2563eb;
+      --brand-600: #1d4ed8;
+      --brand-700: #1e40af;
+      --brand-glow: rgba(37, 99, 235, 0.5);
+      --lumi-glow: #38bdf8;
+    }
+    [data-theme="rose"] {
+      --brand-50: #fff1f2;
+      --brand-100: #ffe4e6;
+      --brand-200: #fecdd3;
+      --brand-300: #fda4af;
+      --brand-400: #fb7185;
+      --brand-500: #e11d48;
+      --brand-600: #be123c;
+      --brand-700: #9f1239;
+      --brand-glow: rgba(225, 29, 72, 0.5);
+      --lumi-glow: #fb7185;
+    }
+    [data-theme="violet"] {
+      --brand-50: #faf5ff;
+      --brand-100: #f3e8ff;
+      --brand-200: #e9d5ff;
+      --brand-300: #d8b4fe;
+      --brand-400: #c084fc;
+      --brand-500: #8b5cf6;
+      --brand-600: #7c3aed;
+      --brand-700: #6d28d9;
+      --brand-glow: rgba(139, 92, 246, 0.5);
+      --lumi-glow: #c084fc;
+    }
+    [data-theme="emerald"] {
+      --brand-50: #f0fdf4;
+      --brand-100: #dcfce7;
+      --brand-200: #bbf7d0;
+      --brand-300: #86efac;
+      --brand-400: #4ade80;
+      --brand-500: #10b981;
+      --brand-600: #059669;
+      --brand-700: #047857;
+      --brand-glow: rgba(16, 185, 129, 0.5);
+      --lumi-glow: #34d399;
+    }
+    [data-theme="amber"] {
+      --brand-50: #fffbeb;
+      --brand-100: #fef3c7;
+      --brand-200: #fde68a;
+      --brand-300: #fcd34d;
+      --brand-400: #fbbf24;
+      --brand-500: #d97706;
+      --brand-600: #b45309;
+      --brand-700: #92400e;
+      --brand-glow: rgba(217, 119, 6, 0.5);
+      --lumi-glow: #fbbf24;
+    }
+  </style>
+  <style data-purpose="mascot-core-styles">
+    /* Mascot stage perspective & Hardware Acceleration */
+    .mascot-container {
+      perspective: 900px;
+    }
+    .mascot-draggable {
+      will-change: transform;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+    /* Core luminaire radiance */
+    .lumi-bulb-glow {
+      box-shadow: 0 0 25px -4px var(--lumi-glow), 0 0 45px -8px var(--brand-glow);
+    }
+    /* Hands animation transforms */
+    .hand-left, .hand-right {
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: bottom center;
+    }
+    /* Holographic levitation pedestal */
+    .hologram-disk {
+      background: radial-gradient(ellipse at center, var(--brand-400) 0%, var(--brand-600) 45%, transparent 70%);
+      box-shadow: 0 0 24px 2px var(--brand-glow);
+    }
+    /* Privacy Mode: Hands covering eyes */
+    .eyes-covered .hand-left {
+      transform: translate(25px, -34px) rotate(42deg) scale(1.1);
+      opacity: 1 !important;
+      z-index: 40;
+    }
+    .eyes-covered .hand-right {
+      transform: translate(-25px, -34px) rotate(-42deg) scale(1.1);
+      opacity: 1 !important;
+      z-index: 40;
+    }
+    .eyes-covered #lumi-head {
+      transform: rotateY(18deg) rotate(-4deg);
+      filter: brightness(0.92);
+    }
+    .eyes-covered .lumi-eye {
+      opacity: 0.2;
+      transform: scaleY(0.2);
+    }
+    /* Joy / Happy Mode (^ ^) */
+    .mascot-happy .lumi-eye {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 8px !important;
+      width: 17px !important;
+      border-top: 3px solid #38bdf8 !important;
+      background: transparent !important;
+      box-shadow: 0 -3px 9px #38bdf8 !important;
+      transform: translateY(-2px);
+    }
+    .mascot-happy .lumi-pupil {
+      display: none !important;
+    }
+    .mascot-happy .lumi-mouth {
+      border-radius: 0 0 9999px 9999px !important;
+      height: 10px !important;
+      width: 22px !important;
+      background: #38bdf8 !important;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+    .mascot-happy .lumi-cheeks {
+      opacity: 1 !important;
+      transform: scale(1.3) !important;
+    }
+    /* Curious Mode (o_O) */
+    .mascot-curious #eye-left {
+      width: 19px !important;
+      height: 23px !important;
+      transform: scale(1.15);
+    }
+    .mascot-curious #eye-right {
+      width: 10px !important;
+      height: 12px !important;
+      transform: scale(0.85);
+    }
+    .mascot-curious #lumi-head {
+      transform: rotate(9deg) translateY(-2px);
+    }
+    .mascot-curious #lumi-top-bulb {
+      box-shadow: 0 0 22px #f59e0b, 0 0 38px #fbbf24 !important;
+      background-color: #f59e0b !important;
+    }
+    /* Sad / Error Mode (> <) */
+    .mascot-sad #lumi-screen {
+      border-color: #f43f5e !important;
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.45) inset !important;
+    }
+    .mascot-sad .lumi-eye {
+      background-color: #f43f5e !important;
+      box-shadow: 0 0 12px #f43f5e !important;
+      border-radius: 0 0 9999px 9999px !important;
+      height: 6px !important;
+      width: 15px !important;
+    }
+    .mascot-sad .lumi-pupil {
+      display: none !important;
+    }
+    .mascot-sad .lumi-mouth {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 5px !important;
+      width: 18px !important;
+      background: #fb7185 !important;
+      box-shadow: 0 0 8px #fb7185;
+    }
+    .mascot-sad #lumi-top-bulb {
+      background-color: #f43f5e !important;
+      box-shadow: 0 0 25px #f43f5e !important;
+      animation: pulse 0.5s infinite !important;
+    }
+    /* Sleep / Idle Mode (– –) */
+    .mascot-sleeping .lumi-eye {
+      border-radius: 9999px !important;
+      height: 3px !important;
+      width: 16px !important;
+      background: #94a3b8 !important;
+      box-shadow: 0 0 4px #94a3b8 !important;
+      transform: translateY(3px) !important;
+    }
+    .mascot-sleeping .lumi-pupil {
+      display: none !important;
+    }
+    .mascot-sleeping .lumi-mouth {
+      width: 8px !important;
+      height: 2px !important;
+      background: #64748b !important;
+      border-radius: 9999px !important;
+    }
+    .mascot-sleeping #lumi-character {
+      animation: sleepBreath 3.5s ease-in-out infinite !important;
+    }
+    .mascot-sleeping #lumi-top-bulb {
+      opacity: 0.35;
+      box-shadow: none !important;
+    }
+    /* Celebrating Mode Hands Raised */
+    .mascot-celebrating .hand-left {
+      transform: translate(-10px, -36px) rotate(-65deg) scale(1.15);
+    }
+    .mascot-celebrating .hand-right {
+      transform: translate(10px, -36px) rotate(65deg) scale(1.15);
+    }
+    /* Dizzy / Tonto Mode (@_@) */
+    .mascot-dizzy #lumi-character {
+      animation: dizzyWobble 0.8s ease-in-out infinite alternate !important;
+    }
+    .mascot-dizzy .lumi-eye {
+      border-radius: 9999px !important;
+      background: #38bdf8 !important;
+      height: 18px !important;
+      width: 18px !important;
+      border: 3px dashed #0284c7 !important;
+      animation: dizzySpin 1.4s linear infinite !important;
+      box-shadow: 0 0 14px #38bdf8 !important;
+    }
+    .mascot-dizzy .lumi-pupil {
+      background: #facc15 !important;
+      width: 6px !important;
+      height: 6px !important;
+    }
+    .mascot-dizzy .lumi-mouth {
+      width: 16px !important;
+      height: 7px !important;
+      border-radius: 9999px !important;
+      background: #38bdf8 !important;
+      transform: rotate(12deg) scale(0.9);
+    }
+    .mascot-dizzy #lumi-top-bulb {
+      background-color: #facc15 !important;
+      box-shadow: 0 0 26px #eab308, 0 0 42px #facc15 !important;
+    }
+    /* Irritated / Angry Mode (ò_ó) */
+    .mascot-angry #lumi-character {
+      animation: angryTremble 0.12s ease-in-out infinite !important;
+    }
+    .mascot-angry #lumi-screen {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.6) inset !important;
+      background-color: #450a0a !important;
+    }
+    .mascot-angry .lumi-eye {
+      background-color: #ef4444 !important;
+      box-shadow: 0 0 14px #ef4444 !important;
+      height: 10px !important;
+      width: 18px !important;
+      transform: rotate(-14deg) translateY(-2px) !important;
+    }
+    .mascot-angry #eye-right {
+      transform: rotate(14deg) translateY(-2px) !important;
+    }
+    .mascot-angry .lumi-pupil {
+      background-color: #7f1d1d !important;
+      width: 4px !important;
+      height: 4px !important;
+    }
+    .mascot-angry .lumi-mouth {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 6px !important;
+      width: 20px !important;
+      background: #f87171 !important;
+    }
+    .mascot-angry #lumi-top-bulb {
+      background-color: #ef4444 !important;
+      box-shadow: 0 0 30px #ef4444, 0 0 50px #dc2626 !important;
+      animation: pulse 0.35s infinite !important;
+    }
+    .mascot-angry .hand-left {
+      transform: translate(6px, -18px) rotate(35deg);
+    }
+    .mascot-angry .hand-right {
+      transform: translate(-6px, -18px) rotate(-35deg);
+    }
+    /* In Love / Apaixonado Mode */
+    .mascot-love .lumi-eye {
+      border-radius: 50% !important;
+      background: #f43f5e !important;
+      box-shadow: 0 0 18px #fb7185 !important;
+      animation: heartPop 1.4s ease-in-out infinite !important;
+      width: 17px !important;
+      height: 17px !important;
+    }
+    .mascot-love .lumi-pupil {
+      background: #fff !important;
+      border-radius: 9999px !important;
+      width: 5px !important;
+      height: 5px !important;
+    }
+    .mascot-love .lumi-cheeks {
+      opacity: 1 !important;
+      background-color: #f43f5e !important;
+      transform: scale(1.4) !important;
+    }
+    .mascot-love #lumi-top-bulb {
+      background-color: #fb7185 !important;
+      box-shadow: 0 0 25px #f43f5e, 0 0 45px #fb7185 !important;
+    }
+    /* Shocked Mode */
+    .mascot-shocked .lumi-eye {
+      width: 22px !important;
+      height: 24px !important;
+      border-radius: 9999px !important;
+      box-shadow: 0 0 18px #38bdf8 !important;
+      animation: pulse 0.4s infinite !important;
+    }
+    .mascot-shocked .lumi-pupil {
+      width: 5px !important;
+      height: 5px !important;
+    }
+    .mascot-shocked .lumi-mouth {
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 9999px !important;
+      background: #38bdf8 !important;
+    }
+    .mascot-shocked #lumi-head {
+      transform: translateY(-8px) scale(1.06);
+    }
+    /* Laughing Mode */
+    .mascot-laughing #lumi-character {
+      animation: laughGiggle 0.18s ease-in-out infinite alternate !important;
+    }
+    .mascot-laughing .lumi-eye {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 7px !important;
+      width: 17px !important;
+      border-top: 3.5px solid #38bdf8 !important;
+      background: transparent !important;
+      box-shadow: 0 -3px 9px #38bdf8 !important;
+      transform: translateY(-1px) rotate(-6deg);
+    }
+    .mascot-laughing #eye-right {
+      transform: translateY(-1px) rotate(6deg) !important;
+    }
+    .mascot-laughing .lumi-pupil {
+      display: none !important;
+    }
+    .mascot-laughing .lumi-mouth {
+      border-radius: 0 0 9999px 9999px !important;
+      height: 12px !important;
+      width: 22px !important;
+      background: #38bdf8 !important;
+      box-shadow: 0 0 12px #38bdf8;
+    }
+    .mascot-laughing .lumi-cheeks {
+      opacity: 1 !important;
+      transform: scale(1.4) !important;
+      background-color: #f43f5e !important;
+    }
+    .mascot-laughing .hand-left {
+      transform: translate(14px, -18px) rotate(28deg);
+    }
+    .mascot-laughing .hand-right {
+      transform: translate(-14px, -18px) rotate(-28deg);
+    }
+    /* Disappointed Mode */
+    .mascot-disappointed #lumi-head {
+      transform: translateY(6px) rotate(-5deg);
+      filter: saturate(0.8) brightness(0.88);
+    }
+    .mascot-disappointed #lumi-screen {
+      border-color: #64748b !important;
+      box-shadow: 0 0 14px rgba(100, 116, 139, 0.4) inset !important;
+    }
+    .mascot-disappointed .lumi-eye {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 5px !important;
+      width: 14px !important;
+      background: #94a3b8 !important;
+      box-shadow: 0 0 6px #94a3b8 !important;
+      transform: translateY(2px) rotate(9deg);
+    }
+    .mascot-disappointed #eye-right {
+      transform: translateY(2px) rotate(-9deg) !important;
+    }
+    .mascot-disappointed .lumi-pupil {
+      display: none !important;
+    }
+    .mascot-disappointed .lumi-mouth {
+      border-radius: 9999px 9999px 0 0 !important;
+      height: 3.5px !important;
+      width: 14px !important;
+      background: #64748b !important;
+      transform: translateY(2px) rotate(-6deg);
+    }
+    .mascot-disappointed #lumi-top-bulb {
+      opacity: 0.45;
+      background-color: #64748b !important;
+      box-shadow: 0 0 10px #64748b !important;
+    }
+    /* Indignant Mode */
+    .mascot-indignant #lumi-character {
+      animation: indignantBob 0.3s ease-in-out infinite alternate !important;
+    }
+    .mascot-indignant #lumi-screen {
+      border-color: #f97316 !important;
+      box-shadow: 0 0 18px rgba(249, 115, 22, 0.6) inset !important;
+    }
+    .mascot-indignant .lumi-eye {
+      background-color: #f97316 !important;
+      box-shadow: 0 0 14px #f97316 !important;
+      height: 8px !important;
+      width: 16px !important;
+      transform: rotate(20deg) translateY(-2px) !important;
+    }
+    .mascot-indignant #eye-right {
+      transform: rotate(-20deg) translateY(-2px) !important;
+    }
+    .mascot-indignant .lumi-pupil {
+      background-color: #431407 !important;
+      width: 5px !important;
+      height: 5px !important;
+    }
+    .mascot-indignant .lumi-mouth {
+      width: 18px !important;
+      height: 4px !important;
+      border-radius: 2px !important;
+      background: #fb923c !important;
+      transform: rotate(6deg);
+    }
+    .mascot-indignant #lumi-top-bulb {
+      background-color: #f97316 !important;
+      box-shadow: 0 0 28px #f97316, 0 0 45px #ea580c !important;
+      animation: pulse 0.4s infinite !important;
+    }
+    .mascot-indignant .hand-left {
+      transform: translate(-14px, -28px) rotate(-55deg) scale(1.15);
+    }
+    .mascot-indignant .hand-right {
+      transform: translate(14px, -28px) rotate(55deg) scale(1.15);
+    }
+    /* Mindblown Mode */
+    .mascot-mindblown #lumi-head {
+      transform: translateY(-6px) scale(1.08);
+      filter: drop-shadow(0 0 24px rgba(168, 85, 247, 0.65));
+    }
+    .mascot-mindblown #lumi-screen {
+      border-color: #a855f7 !important;
+      box-shadow: 0 0 22px rgba(168, 85, 247, 0.7) inset, 0 0 16px rgba(236, 72, 153, 0.5) !important;
+      background: radial-gradient(circle, #3b0764 0%, #030712 100%) !important;
+    }
+    .mascot-mindblown .lumi-eye {
+      width: 20px !important;
+      height: 24px !important;
+      border-radius: 9999px !important;
+      background: #ec4899 !important;
+      box-shadow: 0 0 22px #ec4899, 0 0 38px #a855f7 !important;
+      animation: heartPop 0.65s infinite alternate !important;
+    }
+    .mascot-mindblown .lumi-pupil {
+      background-color: #ffffff !important;
+      width: 7px !important;
+      height: 7px !important;
+      box-shadow: 0 0 10px #ffffff;
+    }
+    .mascot-mindblown .lumi-mouth {
+      width: 15px !important;
+      height: 15px !important;
+      border-radius: 9999px !important;
+      background: #ec4899 !important;
+      box-shadow: 0 0 14px #ec4899;
+    }
+    .mascot-mindblown #lumi-top-bulb {
+      background-color: #ec4899 !important;
+      box-shadow: 0 0 35px #ec4899, 0 0 60px #a855f7, 0 0 85px #8b5cf6 !important;
+      transform: scale(1.5);
+    }
+    /* Draggable Mascot Styles */
+    .mascot-draggable {
+      cursor: grab !important;
+      touch-action: none !important;
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+    }
+    #lumi-character.mascot-dragging {
+      animation: none !important;
+      cursor: grabbing !important;
+      transition: none !important;
+      z-index: 60 !important;
+      filter: drop-shadow(0 25px 30px rgba(0, 0, 0, 0.6)) !important;
+      pointer-events: auto !important;
+    }
+    .mascot-spring-back {
+      transition: transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+    /* Soft ambient cursor light */
+    #cursor-light {
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      background: radial-gradient(circle, var(--brand-glow) 0%, transparent 70%);
+      will-change: transform;
+    }
+    /* Scrollbar customization */
+    .custom-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: #334155 rgba(15, 23, 42, 0.6);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Modo Exibição Apenas (Showcase / Apresentação) */
+    body.showcase-mode #main-header,
+    body.showcase-mode #sidebar-controls,
+    body.showcase-mode #console-section,
+    body.showcase-mode #main-footer,
+    body.showcase-mode #stage-info-footer {
+      display: none !important;
+    }
+    body.showcase-mode #stage-section {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 50 !important;
+      border-radius: 0 !important;
+      border: none !important;
+      min-height: 100vh !important;
+      min-height: 100dvh !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      padding: 1.5rem !important;
+      background: radial-gradient(circle at 50% 45%, #0b1329 0%, #020617 100%) !important;
+      box-shadow: none !important;
+    }
+    body.showcase-mode #showcase-hud-badge {
+      display: flex !important;
+    }
+    body.showcase-mode #showcase-exit-btn {
+      display: flex !important;
+    }
+    body.showcase-mode #showcase-quickbar {
+      display: flex !important;
+    }
+    body.showcase-mode #stage-hud-left {
+      top: 1rem !important;
+      left: 1rem !important;
+    }
+    body.showcase-mode #stage-hud-right {
+      top: 1rem !important;
+      right: 1rem !important;
+    }
+    @media (min-width: 640px) {
+      body.showcase-mode #stage-hud-left {
+        top: 1.5rem !important;
+        left: 1.5rem !important;
+      }
+      body.showcase-mode #stage-hud-right {
+        top: 1.5rem !important;
+        right: 1.5rem !important;
+      }
+    }
+
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 640px) {
+      .speech-bubble {
+        max-width: 88vw;
+        white-space: normal;
+        text-align: center;
+      }
+    }
+
+    /* =========================================================
+       LIGHT MODE INTEGRATION (SOPHISTICATED LIGHT THEME)
+       ========================================================= */
+    html.light-mode {
+      color-scheme: light;
+    }
+    html.light-mode body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    html.light-mode #cursor-light {
+      background: radial-gradient(circle, var(--brand-glow) 0%, transparent 70%);
+      opacity: 0.22;
+    }
+    html.light-mode .animate-pulse-glow {
+      background-color: rgba(37, 99, 235, 0.08) !important;
+    }
+    html.light-mode .bg-\[radial-gradient\(\#334155_1px\,transparent_1px\)\] {
+      background-image: radial-gradient(#94a3b8 1px, transparent 1px) !important;
+      opacity: 0.35 !important;
+    }
+
+    /* Header in Light Mode */
+    html.light-mode #main-header {
+      background-color: rgba(255, 255, 255, 0.88) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    html.light-mode #main-header h1 {
+      color: #0f172a !important;
+    }
+    html.light-mode #main-header p {
+      color: #64748b !important;
+    }
+    html.light-mode #header-badge-assistant {
+      background-color: #eff6ff !important;
+      border-color: #bfdbfe !important;
+      color: #2563eb !important;
+    }
+    html.light-mode #btn-open-code-modal,
+    html.light-mode #btn-toggle-theme {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+    }
+    html.light-mode #btn-open-code-modal:hover,
+    html.light-mode #btn-toggle-theme:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    /* LinkedIn button keeps its branded blue in both modes */
+    html.light-mode #btn-toggle-console {
+      background-color: #ecfdf5 !important;
+      border-color: #a7f3d0 !important;
+      color: #047857 !important;
+      box-shadow: 0 1px 3px rgba(16, 185, 129, 0.1) !important;
+    }
+    html.light-mode #btn-toggle-console:hover {
+      background-color: #d1fae5 !important;
+      border-color: #6ee7b7 !important;
+      color: #065f46 !important;
+    }
+    html.light-mode #btn-toggle-console span:first-child {
+      background-color: #10b981 !important;
+    }
+
+    /* Stage Section in Light Mode */
+    html.light-mode #stage-section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(241, 245, 249, 0.95) 100%) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(226, 232, 240, 0.8) !important;
+    }
+    html.light-mode #stage-info-footer {
+      color: #64748b !important;
+    }
+    html.light-mode #hud-status-wrapper {
+      background-color: rgba(255, 255, 255, 0.94) !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+    }
+    html.light-mode #hud-status {
+      color: #334155 !important;
+    }
+    html.light-mode #hud-coords {
+      background-color: rgba(255, 255, 255, 0.94) !important;
+      border-color: #cbd5e1 !important;
+      color: #475569 !important;
+    }
+    html.light-mode #showcase-hud-badge {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: var(--brand-300) !important;
+      color: var(--brand-700) !important;
+    }
+    html.light-mode #showcase-exit-btn {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+    html.light-mode #showcase-exit-btn:hover {
+      background-color: #f1f5f9 !important;
+    }
+
+    /* Lumi Mascot Head & Pedestal in Light Mode */
+    html.light-mode #lumi-head {
+      background: linear-gradient(to bottom, #ffffff, #f1f5f9, #e2e8f0) !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.12), 0 0 25px -4px var(--lumi-glow) !important;
+    }
+    html.light-mode #lumi-screen {
+      background-color: #090d16 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html.light-mode .hand-left,
+    html.light-mode .hand-right {
+      background-color: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html.light-mode .hand-left span,
+    html.light-mode .hand-right span {
+      background-color: #94a3b8 !important;
+    }
+    html.light-mode #mascot-bubble {
+      background-color: rgba(255, 255, 255, 0.96) !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+      box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15) !important;
+    }
+    html.light-mode #mascot-bubble-text {
+      color: #1e293b !important;
+    }
+    html.light-mode #lumi-status-pill {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    html.light-mode #lumi-status-label {
+      color: #1e293b !important;
+      font-weight: 700 !important;
+    }
+    html.light-mode .hologram-disk {
+      background: radial-gradient(ellipse at center, var(--brand-300) 0%, var(--brand-500) 50%, transparent 72%) !important;
+    }
+
+    /* Sidebar Cards in Light Mode */
+    html.light-mode aside > div {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(241, 245, 249, 0.8) !important;
+    }
+    html.light-mode aside h2 {
+      color: #475569 !important;
+    }
+    html.light-mode aside .btn-mood {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    html.light-mode aside .btn-mood:hover {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light-mode #btn-trigger-celebrate {
+      background-color: #ecfdf5 !important;
+      border-color: #6ee7b7 !important;
+      color: #047857 !important;
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.08) !important;
+    }
+    html.light-mode #btn-trigger-celebrate:hover {
+      background-color: #d1fae5 !important;
+      border-color: #34d399 !important;
+      color: #065f46 !important;
+    }
+    html.light-mode #btn-trigger-shake {
+      background-color: #fff1f2 !important;
+      border-color: #fecdd3 !important;
+      color: #be123c !important;
+      box-shadow: 0 2px 4px rgba(244, 63, 94, 0.08) !important;
+    }
+    html.light-mode #btn-trigger-shake:hover {
+      background-color: #ffe4e6 !important;
+      border-color: #fda4af !important;
+      color: #9f1239 !important;
+    }
+    html.light-mode aside .theme-btn {
+      border-color: #e2e8f0 !important;
+      background-color: #f8fafc !important;
+    }
+    html.light-mode aside .theme-btn:hover {
+      background-color: #f1f5f9 !important;
+    }
+    html.light-mode aside .theme-btn span:last-child {
+      color: #475569 !important;
+    }
+    html.light-mode #input-say-text {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light-mode #select-say-icon {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light-mode aside .border-slate-800 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light-mode aside .text-slate-400 {
+      color: #64748b !important;
+    }
+    html.light-mode aside .text-slate-500 {
+      color: #64748b !important;
+    }
+    html.light-mode aside .bg-slate-800 {
+      background-color: #e2e8f0 !important;
+    }
+
+    /* Console REPL Section in Light Mode */
+    html.light-mode #console-wrapper {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08) !important;
+    }
+    html.light-mode #console-wrapper > div:first-child {
+      background-color: #f1f5f9 !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    html.light-mode #console-wrapper > div:first-child span.font-bold {
+      color: #0f172a !important;
+    }
+    html.light-mode #console-wrapper .bg-emerald-500\/10 {
+      background-color: #d1fae5 !important;
+      border-color: #a7f3d0 !important;
+      color: #047857 !important;
+    }
+    html.light-mode #btn-console-clear,
+    html.light-mode #btn-console-minimize {
+      background-color: #e2e8f0 !important;
+      color: #475569 !important;
+    }
+    html.light-mode #btn-console-clear:hover,
+    html.light-mode #btn-console-minimize:hover {
+      background-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.light-mode #console-wrapper > div:nth-child(2) {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    html.light-mode .cmd-pill {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+    }
+    html.light-mode .cmd-pill:hover {
+      background-color: #f1f5f9 !important;
+      color: var(--brand-600) !important;
+    }
+    html.light-mode #console-logs-container {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+    }
+    html.light-mode #console-logs-container .text-slate-600 {
+      color: #94a3b8 !important;
+    }
+    html.light-mode #console-logs-container .text-slate-300 {
+      color: #334155 !important;
+    }
+    html.light-mode #console-form {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    html.light-mode #console-input {
+      color: #0f172a !important;
+    }
+    html.light-mode #console-input::placeholder {
+      color: #94a3b8 !important;
+    }
+
+    /* Modal in Light Mode */
+    html.light-mode #code-modal > div {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+    }
+    html.light-mode #code-modal h3 {
+      color: #0f172a !important;
+    }
+    html.light-mode #code-modal p {
+      color: #64748b !important;
+    }
+    html.light-mode #code-modal .bg-slate-950 {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    html.light-mode #code-modal .border-slate-800 {
+      border-color: #e2e8f0 !important;
+    }
+    html.light-mode #btn-close-modal-footer {
+      background-color: #f1f5f9 !important;
+      color: #334155 !important;
+    }
+    html.light-mode #btn-close-modal-footer:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html.light-mode .custom-scroll {
+      scrollbar-color: #cbd5e1 rgba(241, 245, 249, 0.8);
+    }
+    html.light-mode .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.8) !important;
+    }
+    html.light-mode .custom-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1 !important;
+    }
+    html.light-mode .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8 !important;
+    }
+
+    /* Footer in Light Mode */
+    html.light-mode #main-footer {
+      background-color: rgba(255, 255, 255, 0.88) !important;
+      border-color: #e2e8f0 !important;
+      color: #64748b !important;
+    }
+    html.light-mode #main-footer span.font-medium {
+      color: #1e293b !important;
+    }
+
+    /* Showcase Mode in Light Mode */
+    html.light-mode body.showcase-mode #stage-section {
+      background: radial-gradient(circle at 50% 45%, #ffffff 0%, #e2e8f0 100%) !important;
+    }
+    html.light-mode #showcase-quickbar > div {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.15) !important;
+    }
+    html.light-mode .showcase-btn {
+      background-color: #f1f5f9 !important;
+      color: #1e293b !important;
+    }
+    html.light-mode .showcase-btn:hover {
+      background-color: #e2e8f0 !important;
+    }
+    html.light-mode #btn-showcase-celebrate {
+      background-color: #ecfdf5 !important;
+      border-color: #a7f3d0 !important;
+      color: #047857 !important;
+    }
+    html.light-mode #btn-showcase-celebrate:hover {
+      background-color: #d1fae5 !important;
+    }
+    html.light-mode #btn-showcase-quote {
+      background-color: #eff6ff !important;
+      border-color: #bfdbfe !important;
+      color: #1d4ed8 !important;
+    }
+    html.light-mode #btn-showcase-quote:hover {
+      background-color: #dbeafe !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-brand-500 selection:text-white flex flex-col justify-between overflow-x-hidden relative" id="app-body">
+  <div aria-hidden="true" class="fixed w-96 h-96 rounded-full opacity-35 blur-3xl z-0 pointer-events-none" id="cursor-light"></div>
+  <div aria-hidden="true" class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-brand-500/15 rounded-full blur-3xl animate-pulse-glow"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
+  </div>
+
+  <header class="relative z-20 w-full px-4 sm:px-6 py-3 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md" id="main-header">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 shadow-md shadow-sky-500/10 shrink-0">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="flex flex-col justify-center">
+          <h1 class="text-xs sm:text-sm font-bold text-white tracking-wide flex items-center gap-1.5 leading-none">
+            Mascote Lumi <span class="px-1.5 py-[2px] rounded-md text-[8px] sm:text-[9px] font-semibold leading-none inline-flex items-center bg-sky-500/15 text-sky-300 border border-sky-500/30 tracking-wide transition-colors" id="header-badge-assistant">Assistente Virtual</span>
+          </h1>
+          <p class="text-[10px] sm:text-xs text-slate-400 mt-1 leading-normal">Ambiente interativo com física, IA Copilot e reações dinâmicas</p>
+        </div>
+      </div>
+      <!-- Quick Header Actions -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <button class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] sm:text-xs font-semibold transition flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-toggle-theme" title="Alternar entre modo claro e escuro" type="button">
+          <span id="theme-toggle-icon">☀️</span>
+          <span class="hidden sm:inline" id="theme-toggle-text">Modo Claro</span>
+        </button>
+        <button class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-[11px] sm:text-xs font-bold text-white shadow-md shadow-brand-500/20 transition flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-enter-showcase" title="Alternar para visualização de apresentação em tela cheia" type="button">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+          <span class="inline">Modo Exibição</span>
+        </button>
+        <button class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-[11px] sm:text-xs font-semibold text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 shadow-sm focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-toggle-console" type="button">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Console</span>
+        </button>
+        <button class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-[11px] sm:text-xs font-medium text-slate-300 border border-slate-700 transition flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-open-code-modal" type="button">
+          <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+          <span class="hidden sm:inline">Código</span>
+        </button>
+        <a class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-[11px] sm:text-xs font-semibold text-white border border-[#0A66C2]/60 transition flex items-center gap-1.5 shadow-md shadow-[#0A66C2]/20 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none no-underline" href="https://www.linkedin.com/in/kayck-lima/" target="_blank" rel="noopener noreferrer" title="Perfil LinkedIn de Kayck Lima">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span class="hidden sm:inline">LinkedIn</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-5 lg:gap-6 items-stretch justify-center">
+    <!-- LEFT STAGE: The Mascot Alive Display -->
+    <section aria-label="Visualizador do Mascote Lumi" class="flex-1 min-h-[420px] sm:min-h-[480px] bg-slate-950/70 backdrop-blur-xl rounded-3xl border border-slate-800 p-4 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl transition-all duration-300" id="stage-section">
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-500/5 via-transparent to-brand-500/10 pointer-events-none"></div>
+
+      <!-- Stage HUD Top Bar: Left Indicators -->
+      <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-40 flex items-center flex-wrap gap-2 pointer-events-auto" id="stage-hud-left">
+        <div class="hidden items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-900/90 backdrop-blur-md border border-sky-500/30 text-[10px] sm:text-[11px] font-mono text-sky-300 shadow-xl" id="showcase-hud-badge">
+          <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+          <span>LUMI • APRESENTAÇÃO</span>
+        </div>
+        <div class="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-800 text-[10px] sm:text-[11px] font-mono font-medium text-slate-300 shadow-md pointer-events-none" id="hud-status-wrapper" role="status">
+          <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-ping" id="hud-status-dot"></span>
+          <span class="tracking-tight text-slate-300" id="hud-status">STATUS: ONLINE / RASTREANDO</span>
+        </div>
+      </div>
+
+      <!-- Stage HUD Top Bar: Right Controls & Coordinates -->
+      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 z-40 flex items-center gap-2 pointer-events-auto" id="stage-hud-right">
+        <div class="hidden sm:flex items-center px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-800 text-[10px] sm:text-[11px] font-mono text-slate-400 shadow-md pointer-events-none select-none" id="hud-coords">
+          X: 0px | Y: 0px
+        </div>
+        <button class="hidden px-3 sm:px-3.5 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 shadow-xl backdrop-blur-md text-[11px] sm:text-xs font-semibold items-center gap-1.5 transition hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="showcase-exit-btn" title="Voltar ao modo laboratório (ESC)" type="button">
+          <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          </svg>
+          <span>Sair (ESC)</span>
+        </button>
+      </div>
+
+      <!-- Mascot Stage Container -->
+      <div class="relative flex flex-col items-center justify-center select-none z-20 my-auto py-6" id="mascot-stage">
+        <div class="mascot-container relative flex flex-col items-center animate-float-slow" id="lumi-mascot">
+          <!-- Interactive Mascot Character Shell -->
+          <div aria-label="Mascote Interativo Lumi" class="mascot-draggable relative flex flex-col items-center p-3 select-none touch-none cursor-grab" id="lumi-character" role="button" tabindex="0" title="Arraste o Lumi e solte-o para vê-lo tonto!">
+            <!-- Speech Bubble / Thought Badge -->
+            <div aria-live="polite" class="speech-bubble absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 transition-all duration-300 pointer-events-none bg-slate-800/95 text-slate-200 text-xs font-semibold py-2 px-4 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-2.5 backdrop-blur-md whitespace-nowrap z-40" id="mascot-bubble">
+              <span class="text-base shrink-0" id="mascot-bubble-icon">✨</span>
+              <span class="leading-snug" id="mascot-bubble-text">Olá! Eu sou o Lumi, criado por Kayck Lima. Seu assistente virtual inteligente!</span>
+            </div>
+
+            <!-- Sleep Zzz Particles -->
+            <div aria-hidden="true" class="absolute -top-7 right-1 pointer-events-none hidden z-30" id="lumi-sleep-zzz">
+              <span class="absolute font-black text-brand-400 animate-zzz-float text-sm tracking-widest font-mono">z</span>
+              <span class="absolute font-black text-brand-300 animate-zzz-float text-base delay-300 font-mono" style="animation-delay: 0.7s;">Z</span>
+              <span class="absolute font-black text-brand-200 animate-zzz-float text-xl delay-700 font-mono" style="animation-delay: 1.4s;">Z</span>
+            </div>
+
+            <!-- Dizzy Orbiting Stars Effect -->
+            <div aria-hidden="true" class="absolute -top-7 inset-x-0 flex items-center justify-center gap-3 pointer-events-none hidden z-30" id="lumi-dizzy-stars">
+              <span class="text-sm font-bold animate-bounce text-amber-300">💫</span>
+              <span class="text-base font-bold animate-spin text-yellow-400" style="animation-duration: 2s;">⭐</span>
+              <span class="text-sm font-bold animate-bounce text-amber-300 delay-150">💫</span>
+            </div>
+
+            <!-- Anger Steam Puffs -->
+            <div aria-hidden="true" class="absolute top-2 -left-4 pointer-events-none hidden z-30 animate-steam-puff" id="lumi-steam-l">
+              <span class="text-xs">💨</span>
+            </div>
+            <div aria-hidden="true" class="absolute top-2 -right-4 pointer-events-none hidden z-30 animate-steam-puff" id="lumi-steam-r">
+              <span class="text-xs">💨</span>
+            </div>
+
+            <!-- Laughing Tears -->
+            <div aria-hidden="true" class="absolute top-10 -left-5 pointer-events-none hidden z-30 font-bold text-sm" id="lumi-tear-l" style="animation: tearFlyL 0.75s ease-out infinite;">
+              💦
+            </div>
+            <div aria-hidden="true" class="absolute top-10 -right-5 pointer-events-none hidden z-30 font-bold text-sm" id="lumi-tear-r" style="animation: tearFlyR 0.75s ease-out infinite;">
+              💦
+            </div>
+
+            <!-- Mindblown Brain Explosion Effect -->
+            <div aria-hidden="true" class="absolute -top-12 inset-x-0 flex flex-col items-center pointer-events-none hidden z-30" id="lumi-mindblown-effect">
+              <div class="absolute -top-1 w-24 h-24 rounded-full bg-gradient-to-t from-fuchsia-500/40 via-purple-500/30 to-transparent blur-md" style="animation: mindblownBurst 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;"></div>
+              <div class="relative flex items-center justify-center gap-1">
+                <span class="text-lg animate-bounce">⚡</span>
+                <span class="text-2xl animate-pulse scale-125">🤯</span>
+                <span class="text-lg animate-bounce delay-150">💥</span>
+              </div>
+            </div>
+
+            <!-- LED Filament Antenna / Floating Halo Crown -->
+            <div class="relative flex flex-col items-center -mb-1 pointer-events-none">
+              <div class="relative">
+                <div class="w-5 h-5 rounded-full bg-brand-400 lumi-bulb-glow border-2 border-white/90 animate-pulse flex items-center justify-center transition-all duration-300" id="lumi-top-bulb">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                </div>
+                <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-sm font-extrabold text-amber-400 opacity-0 transition-opacity duration-200" id="curious-mark">?</span>
+              </div>
+              <div class="w-0.5 h-4 bg-gradient-to-b from-brand-300 to-slate-500"></div>
+            </div>
+
+            <!-- Main Mascot Robot-Lamp Head -->
+            <div class="relative w-[112px] h-[100px] rounded-[32px] bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 border-2 border-slate-600 shadow-2xl lumi-bulb-glow flex flex-col items-center justify-center p-2.5 transition-all duration-300 overflow-hidden pointer-events-none" id="lumi-head">
+              <!-- OLED Visor Screen -->
+              <div class="relative w-full h-[60px] rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center px-2.5 shadow-inner overflow-hidden" id="lumi-screen">
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.4)_50%)] [background-size:100%_4px] pointer-events-none opacity-40"></div>
+                <div class="relative z-10 flex items-center justify-center gap-4" id="lumi-eyes-row">
+                  <!-- Left Eye -->
+                  <div class="lumi-eye relative w-4 h-7 rounded-full bg-sky-400 shadow-[0_0_12px_#38bdf8] flex items-center justify-center overflow-hidden transition-all duration-200" id="eye-left">
+                    <div class="lumi-pupil w-2.5 h-2.5 rounded-full bg-slate-950 transition-transform duration-75" id="pupil-left"></div>
+                    <span class="absolute top-1 right-0.5 w-1.5 h-1.5 rounded-full bg-white/95"></span>
+                  </div>
+                  <!-- Right Eye -->
+                  <div class="lumi-eye relative w-4 h-7 rounded-full bg-sky-400 shadow-[0_0_12px_#38bdf8] flex items-center justify-center overflow-hidden transition-all duration-200" id="eye-right">
+                    <div class="lumi-pupil w-2.5 h-2.5 rounded-full bg-slate-950 transition-transform duration-75" id="pupil-right"></div>
+                    <span class="absolute top-1 right-0.5 w-1.5 h-1.5 rounded-full bg-white/95"></span>
+                  </div>
+                </div>
+                <div class="lumi-mouth absolute bottom-1.5 w-3.5 h-1.5 rounded-full bg-sky-400/90 transition-all duration-200" id="lumi-mouth"></div>
+              </div>
+              <div class="lumi-cheeks absolute bottom-6 left-2.5 w-3 h-2 rounded-full bg-rose-400/40 blur-[1px] opacity-0 transition-opacity duration-300" id="cheek-l"></div>
+              <div class="lumi-cheeks absolute bottom-6 right-2.5 w-3 h-2 rounded-full bg-rose-400/40 blur-[1px] opacity-0 transition-opacity duration-300" id="cheek-r"></div>
+            </div>
+
+            <!-- Hands for Privacy & Celebration -->
+            <div class="absolute top-11 -left-2.5 w-5 h-5 rounded-full bg-slate-700 border border-slate-600 shadow-md flex items-center justify-center hand-left opacity-90 z-20 pointer-events-none" id="lumi-hand-l">
+              <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+            </div>
+            <div class="absolute top-11 -right-2.5 w-5 h-5 rounded-full bg-slate-700 border border-slate-600 shadow-md flex items-center justify-center hand-right opacity-90 z-20 pointer-events-none" id="lumi-hand-r">
+              <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+            </div>
+
+            <!-- Celebration Particles -->
+            <div aria-hidden="true" class="hidden absolute -top-5 inset-x-0 justify-between px-1 pointer-events-none z-30" id="lumi-sparkles">
+              <span class="text-base animate-bounce">✨</span>
+              <span class="text-sm animate-ping text-amber-400">⚡</span>
+              <span class="text-base animate-bounce delay-150">🎉</span>
+            </div>
+          </div>
+
+          <!-- Holographic Levitation Pedestal -->
+          <div class="relative -mt-1 flex flex-col items-center pointer-events-none">
+            <div class="w-20 h-4 bg-gradient-to-b from-brand-400/20 to-transparent blur-[2px]"></div>
+            <div class="relative flex items-center justify-center">
+              <div class="w-28 h-6 rounded-[100%] hologram-disk animate-float-platform opacity-80"></div>
+              <div class="absolute w-20 h-3.5 rounded-[100%] border border-brand-300/60 animate-ping opacity-30"></div>
+            </div>
+            <div class="mt-3.5 flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 backdrop-blur-md border border-slate-700 shadow-sm text-xs font-semibold text-slate-300 transition-colors" id="lumi-status-pill">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="lumi-status-dot"></span>
+              <span id="lumi-status-label">Lumi Ativo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Reaction Dock in Presentation Mode -->
+      <div class="hidden fixed bottom-6 inset-x-0 z-50 flex items-center justify-center px-4 pointer-events-none" id="showcase-quickbar">
+        <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/70 p-2 rounded-2xl shadow-2xl flex items-center gap-1.5 sm:gap-2 overflow-x-auto max-w-full custom-scroll pointer-events-auto">
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="happy" aria-label="Humor Feliz" title="Humor: Feliz">
+            <span>✨</span>
+            <span class="hidden sm:inline">Feliz</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="curious" aria-label="Humor Curioso" title="Humor: Curioso">
+            <span>🤔</span>
+            <span class="hidden sm:inline">Curioso</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="love" aria-label="Humor Amor" title="Humor: Amor">
+            <span>🥰</span>
+            <span class="hidden sm:inline">Amor</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="mindblown" aria-label="Humor Mente Explodida" title="Humor: Mente Explodida">
+            <span>🤯</span>
+            <span class="hidden sm:inline">Explosão</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-xs font-semibold text-emerald-300 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-showcase-celebrate" aria-label="Comemorar" title="Comemoração com confetes">
+            <span>🎉</span>
+            <span class="hidden sm:inline">Festa</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-brand-600/30 hover:bg-brand-600/50 border border-brand-500/40 text-xs font-semibold text-brand-300 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-showcase-quote" aria-label="Frase Motivacional" title="Pedir frase motivacional">
+            <span>🌱</span>
+            <span class="hidden sm:inline">Motivação</span>
+          </button>
+          <button class="showcase-btn px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1 transition shrink-0 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-showcase-theme" aria-label="Alternar Modo Claro ou Escuro" title="Alternar Modo Claro / Escuro">
+            <span id="showcase-theme-icon">☀️</span>
+            <span class="hidden sm:inline">Tema</span>
+          </button>
+          <a class="showcase-btn px-2.5 py-1.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-xs font-semibold text-white flex items-center gap-1 transition shrink-0 no-underline focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" href="https://www.linkedin.com/in/kayck-lima/" target="_blank" rel="noopener noreferrer" aria-label="Perfil de Kayck Lima no LinkedIn" title="LinkedIn de Kayck Lima">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <span class="hidden sm:inline">LinkedIn</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="w-full text-center text-[11px] sm:text-xs text-slate-500 mt-2 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 pointer-events-none" id="stage-info-footer">
+        <span>✋ <strong>Arraste o Lumi</strong> e solte-o para vê-lo tonto!</span>
+        <span class="hidden sm:inline">•</span>
+        <span>⚡ <strong>Clique 4x rápido</strong> para vê-lo irritado!</span>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDEBAR: Live Mascot Controls & Debugging Station -->
+    <aside class="w-full lg:w-96 flex flex-col gap-4 sm:gap-5" id="sidebar-controls">
+      <!-- Panel: Expressões e Emoções -->
+      <div class="bg-slate-950/70 backdrop-blur-xl border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-brand-400"></span>
+          Expressões &amp; Posturas
+        </h2>
+        <div class="grid grid-cols-2 gap-2">
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="normal">
+            <span>🙂</span>
+            <span>Normal</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="happy">
+            <span>✨</span>
+            <span>Feliz (^ ^)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="curious">
+            <span>🤔</span>
+            <span>Curioso (o_O)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="sad">
+            <span>🥺</span>
+            <span>Triste (&gt; &lt;)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="angry">
+            <span>😤</span>
+            <span>Irritado (ò_ó)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="dizzy">
+            <span>😵‍💫</span>
+            <span>Tonto (@_@)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="love">
+            <span>🥰</span>
+            <span>Amor (♥_♥)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="shocked">
+            <span>😲</span>
+            <span>Chocado (O_O)</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="laughing">
+            <span>😂</span>
+            <span>Chorando de Rir</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="disappointed">
+            <span>😞</span>
+            <span>Desapontado</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="indignant">
+            <span>😠</span>
+            <span>Indignado</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="mindblown">
+            <span>🤯</span>
+            <span>Mente Explodida</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="privacy">
+            <span>🙈</span>
+            <span>Privacidade</span>
+          </button>
+          <button class="btn-mood py-2.5 sm:py-2 px-3 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-mood="sleeping">
+            <span>💤</span>
+            <span>Dormir</span>
+          </button>
+        </div>
+        <!-- Action Triggers -->
+        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-800">
+          <button class="py-2.5 sm:py-2 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-xs font-semibold text-emerald-300 flex items-center justify-center gap-1.5 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-trigger-celebrate">
+            <span>🎉</span>
+            <span>Comemorar</span>
+          </button>
+          <button class="py-2.5 sm:py-2 px-3 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/40 text-xs font-semibold text-rose-300 flex items-center justify-center gap-1.5 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-trigger-shake">
+            <span>🫨</span>
+            <span>Balançar Cabeça</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel: Pílulas Motivacionais e Produtividade -->
+      <div class="bg-slate-950/70 backdrop-blur-xl border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Motivação &amp; Produtividade
+          </span>
+          <span class="text-[10px] font-mono text-slate-500" id="motivation-counter">Auto: ATIVO</span>
+        </h2>
+        <div class="space-y-3">
+          <button class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition active:scale-95 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-trigger-motivation" type="button">
+            <span>🌱</span>
+            <span>Pedir Frase Motivacional</span>
+          </button>
+          <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
+            <span>Frases Automáticas (a cada 30s)</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input checked class="sr-only peer" id="toggle-motivation" type="checkbox" aria-label="Alternar frases motivacionais automáticas"/>
+              <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel: Balão de Fala Dinâmico -->
+      <div class="bg-slate-950/70 backdrop-blur-xl border border-slate-800 rounded-3xl p-5 shadow-xl">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          Falar Mensagem
+        </h2>
+        <div class="space-y-2.5">
+          <div class="flex gap-2">
+            <input class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 font-sans" id="input-say-text" placeholder="Digite uma fala..." type="text" value="Parabéns! Operação realizada com sucesso!" aria-label="Texto da mensagem que o Lumi vai falar"/>
+            <select class="bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-white focus:outline-none focus:border-brand-500 font-sans cursor-pointer" id="select-say-icon" aria-label="Escolha o ícone ou emoji da fala">
+              <option value="✨">✨</option>
+              <option value="👋">👋</option>
+              <option value="💡">💡</option>
+              <option value="⚡">⚡</option>
+              <option value="🎉">🎉</option>
+              <option value="🔒">🔒</option>
+              <option value="⚠️">⚠️</option>
+              <option value="💤">💤</option>
+            </select>
+          </div>
+          <button class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 font-semibold text-xs text-white shadow-lg shadow-brand-600/30 transition flex items-center justify-center gap-1.5 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-trigger-say">
+            <span>Enviar Fala ao Lumi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel: Paleta de Cores LED -->
+      <div class="bg-slate-950/70 backdrop-blur-xl border border-slate-800 rounded-3xl p-5 shadow-xl">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+          Iluminação LED do Mascote
+        </h2>
+        <div class="grid grid-cols-5 gap-2">
+          <button class="theme-btn p-2 rounded-xl border border-slate-700 hover:border-blue-400 flex flex-col items-center gap-1 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-theme="blue" title="Safira">
+            <span class="w-5 h-5 rounded-full bg-blue-500 shadow-md"></span>
+            <span class="text-[9px] text-slate-400">Safira</span>
+          </button>
+          <button class="theme-btn p-2 rounded-xl border border-slate-700 hover:border-rose-400 flex flex-col items-center gap-1 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-theme="rose" title="Rose">
+            <span class="w-5 h-5 rounded-full bg-rose-500 shadow-md"></span>
+            <span class="text-[9px] text-slate-400">Rose</span>
+          </button>
+          <button class="theme-btn p-2 rounded-xl border border-slate-700 hover:border-purple-400 flex flex-col items-center gap-1 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-theme="violet" title="Violeta">
+            <span class="w-5 h-5 rounded-full bg-purple-500 shadow-md"></span>
+            <span class="text-[9px] text-slate-400">Violeta</span>
+          </button>
+          <button class="theme-btn p-2 rounded-xl border border-slate-700 hover:border-emerald-400 flex flex-col items-center gap-1 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-theme="emerald" title="Verde">
+            <span class="w-5 h-5 rounded-full bg-emerald-500 shadow-md"></span>
+            <span class="text-[9px] text-slate-400">Verde</span>
+          </button>
+          <button class="theme-btn p-2 rounded-xl border border-slate-700 hover:border-amber-400 flex flex-col items-center gap-1 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-theme="amber" title="Âmbar">
+            <span class="w-5 h-5 rounded-full bg-amber-500 shadow-md"></span>
+            <span class="text-[9px] text-slate-400">Âmbar</span>
+          </button>
+        </div>
+        <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>Rastrear Cursor</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input checked class="sr-only peer" id="toggle-tracking" type="checkbox" aria-label="Alternar rastreamento do cursor do mouse"/>
+            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-600"></div>
+          </label>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Integrated Interactive Live Console -->
+  <section aria-label="Console Interativo de Depuração" class="relative z-30 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-4" id="console-section">
+    <div class="bg-slate-950/90 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300" id="console-wrapper">
+      <!-- Console Header Bar -->
+      <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900/80 border-b border-slate-800 text-xs font-mono select-none">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5" aria-hidden="true">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+          </div>
+          <span class="font-bold text-slate-300 ml-2">Console Interativo Lumi</span>
+          <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">ATIVO</span>
+        </div>
+        <!-- Console Quick Filters & Controls -->
+        <div class="flex items-center gap-2">
+          <button class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition text-[11px] focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-console-clear" title="Limpar logs" type="button">
+            Limpar
+          </button>
+          <button class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition text-[11px] focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-console-minimize" title="Minimizar / Expandir" type="button">
+            <span id="console-min-icon">▲</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Command Buttons -->
+      <div class="flex items-center gap-1.5 px-4 py-1.5 bg-slate-900/40 border-b border-slate-800/80 overflow-x-auto text-[11px] font-mono custom-scroll">
+        <span class="text-slate-500 shrink-0">Comandos rápidos:</span>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="lumi.setMood('happy')" type="button">
+          setMood('happy')
+        </button>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="lumi.celebrate()" type="button">
+          celebrate()
+        </button>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="lumi.shake()" type="button">
+          shake()
+        </button>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="lumi.speakMotivationalQuote()" type="button">
+          speakMotivationalQuote()
+        </button>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="toggleThemeMode()" type="button">
+          toggleThemeMode()
+        </button>
+        <button class="cmd-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-brand-600/30 text-slate-300 hover:text-brand-300 border border-slate-700/60 shrink-0 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" data-cmd="lumi.say('Console conectado!', '🚀', 3000)" type="button">
+          say()
+        </button>
+      </div>
+
+      <!-- Console Logs Stream Area -->
+      <div aria-live="polite" class="h-44 overflow-y-auto p-3 font-mono text-[12px] space-y-1.5 custom-scroll bg-slate-950" id="console-logs-container">
+        <!-- Logs dynamically injected here -->
+      </div>
+
+      <!-- Interactive REPL Input Line -->
+      <form class="flex items-center border-t border-slate-800 bg-slate-900/60 px-3 py-2" id="console-form">
+        <span class="text-emerald-400 font-mono font-bold mr-2 select-none" aria-hidden="true">&gt;</span>
+        <input autocomplete="off" class="flex-1 bg-transparent border-none outline-none text-xs font-mono text-emerald-300 placeholder-slate-600 focus:ring-0" id="console-input" placeholder="Execute código JS ou comandos (ex: lumi.setMood('love') ou lumi.say('Olá'))" spellcheck="false" type="text" aria-label="Linha de comando do console REPL do Lumi"/>
+        <button class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-[11px] font-semibold transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" type="submit">
+          Executar
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Modal: Código Limpo e Isolado para Copiar -->
+  <div aria-modal="true" aria-labelledby="code-modal-title" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4" id="code-modal" role="dialog">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl flex flex-col max-h-[85vh]">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div>
+          <h3 class="text-base font-bold text-white" id="code-modal-title">Código do Mascote (Pronto para Inclusão)</h3>
+          <p class="text-xs text-slate-400">Copie o trecho isolado do Lumi para colar em qualquer tela do seu sistema.</p>
+        </div>
+        <button aria-label="Fechar modal de código" class="text-slate-400 hover:text-white p-1 rounded-lg focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-close-code-modal" type="button">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+        </button>
+      </div>
+      <div class="my-4 overflow-y-auto flex-1 bg-slate-950 rounded-xl p-4 border border-slate-800 text-xs font-mono text-slate-300 space-y-3 custom-scroll">
+        <p class="text-amber-400 font-semibold">// 1. Elemento HTML do Mascote</p>
+        <pre class="overflow-x-auto text-[11px] text-slate-400 selection:bg-brand-500 custom-scroll pb-2" id="code-snippet-html"></pre>
+      </div>
+      <div class="pt-3 border-t border-slate-800 flex justify-end gap-3">
+        <button class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-close-modal-footer" type="button">Fechar</button>
+        <button class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-xs font-semibold text-white transition flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-brand-500 focus:outline-none" id="btn-copy-code" type="button">
+          <span id="copy-text">Copiar Código</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-20 w-full py-4 px-4 sm:px-6 text-center text-xs text-slate-400 border-t border-slate-900 bg-slate-950/60 backdrop-blur-md" id="main-footer">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+        <span class="font-medium text-slate-300">Mascote Lumi • Assistente Virtual Interativo</span>
+      </div>
+      <div class="text-slate-400 flex items-center gap-2">
+        <span>Desenvolvido por <strong class="text-brand-400 font-semibold">Kayck Lima</strong> • Portfólio de Desenvolvimento de Sistemas</span>
+        <a class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#0A66C2] hover:bg-[#004182] text-white text-[10px] font-semibold transition no-underline" href="https://www.linkedin.com/in/kayck-lima/" target="_blank" rel="noopener noreferrer" title="LinkedIn de Kayck Lima">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script data-purpose="lumi-interactive-console">
+    /**
+     * Security & Formatting Utilities
+     */
+    function escapeHtml(str) {
+      if (typeof str !== 'string') str = String(str);
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * LumiConsoleManager
+     * Intercepts browser logs with secure HTML escaping and safe execution scope.
+     */
+    class LumiConsoleManager {
+      constructor() {
+        this.container = document.getElementById('console-logs-container');
+        this.input = document.getElementById('console-input');
+        this.form = document.getElementById('console-form');
+        this.wrapper = document.getElementById('console-wrapper');
+        this.minIcon = document.getElementById('console-min-icon');
+        this.isMinimized = false;
+        this.history = [];
+        this.historyIndex = -1;
+
+        this.originalConsole = {
+          log: console.log.bind(console),
+          warn: console.warn.bind(console),
+          error: console.error.bind(console),
+          info: console.info.bind(console)
+        };
+
+        this.init();
+      }
+
+      init() {
+        console.log = (...args) => {
+          this.originalConsole.log(...args);
+          this.appendLog('log', args);
+        };
+        console.info = (...args) => {
+          this.originalConsole.info(...args);
+          this.appendLog('info', args);
+        };
+        console.warn = (...args) => {
+          this.originalConsole.warn(...args);
+          this.appendLog('warn', args);
+        };
+        console.error = (...args) => {
+          this.originalConsole.error(...args);
+          this.appendLog('error', args);
+        };
+
+        if (this.form && this.input) {
+          this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const cmd = this.input.value.trim();
+            if (!cmd) return;
+            this.executeCommand(cmd);
+            this.history.push(cmd);
+            this.historyIndex = this.history.length;
+            this.input.value = '';
+          });
+
+          this.input.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+              if (this.historyIndex > 0) {
+                this.historyIndex--;
+                this.input.value = this.history[this.historyIndex] || '';
+              }
+            } else if (e.key === 'ArrowDown') {
+              if (this.historyIndex < this.history.length - 1) {
+                this.historyIndex++;
+                this.input.value = this.history[this.historyIndex] || '';
+              } else {
+                this.historyIndex = this.history.length;
+                this.input.value = '';
+              }
+            }
+          });
+        }
+
+        document.querySelectorAll('.cmd-pill').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const cmd = btn.getAttribute('data-cmd');
+            if (cmd) this.executeCommand(cmd);
+          });
+        });
+
+        const btnClear = document.getElementById('btn-console-clear');
+        if (btnClear) {
+          btnClear.addEventListener('click', () => {
+            if (this.container) this.container.innerHTML = '';
+            this.appendLog('info', ['Console limpo com sucesso.']);
+          });
+        }
+
+        const btnMin = document.getElementById('btn-console-minimize');
+        if (btnMin) {
+          btnMin.addEventListener('click', () => this.toggleMinimize());
+        }
+
+        this.appendLog('info', ['[Lumi Kernel v2.5] Console carregado e pronto para comandos.']);
+        this.appendLog('log', ['Digite qualquer comando JS ou use os botões rápidos. Experimente: lumi.setMood("love")']);
+      }
+
+      toggleMinimize() {
+        this.isMinimized = !this.isMinimized;
+        if (!this.container) return;
+        if (this.isMinimized) {
+          this.container.classList.add('hidden');
+          if (this.form) this.form.classList.add('hidden');
+          if (this.minIcon) this.minIcon.textContent = '▼';
+        } else {
+          this.container.classList.remove('hidden');
+          if (this.form) this.form.classList.remove('hidden');
+          if (this.minIcon) this.minIcon.textContent = '▲';
+        }
+      }
+
+      executeCommand(cmd) {
+        this.appendLog('cmd', [cmd]);
+        try {
+          // Execute with 'use strict' in safe Function context to handle expressions & statements cleanly
+          let result;
+          try {
+            result = new Function('"use strict"; return (' + cmd + ');')();
+          } catch (exprErr) {
+            result = new Function('"use strict"; ' + cmd)();
+          }
+          if (result !== undefined) {
+            this.appendLog('result', [result]);
+          }
+        } catch (err) {
+          this.appendLog('error', [err.message || String(err)]);
+        }
+      }
+
+      appendLog(type, args) {
+        if (!this.container) return;
+        const line = document.createElement('div');
+        line.className = 'flex items-start gap-2 leading-relaxed break-all';
+
+        const time = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+        const timeSpan = `<span class="text-slate-600 shrink-0 select-none">[${time}]</span>`;
+
+        const formattedText = args.map(arg => {
+          if (arg instanceof Error) {
+            return arg.stack || arg.message || String(arg);
+          }
+          if (typeof arg === 'object' && arg !== null) {
+            try {
+              return JSON.stringify(arg, null, 2);
+            } catch (e) {
+              return String(arg);
+            }
+          }
+          return String(arg);
+        }).join(' ');
+
+        // XSS sanitization check
+        const safeText = escapeHtml(formattedText);
+
+        let content = '';
+        if (type === 'cmd') {
+          content = `${timeSpan} <span class="text-brand-400 font-semibold">&gt; ${safeText}</span>`;
+        } else if (type === 'result') {
+          content = `${timeSpan} <span class="text-emerald-400">&lt; ${safeText}</span>`;
+        } else if (type === 'warn') {
+          content = `${timeSpan} <span class="text-amber-400">⚠️ ${safeText}</span>`;
+        } else if (type === 'error') {
+          content = `${timeSpan} <span class="text-rose-400">❌ ${safeText}</span>`;
+        } else if (type === 'info') {
+          content = `${timeSpan} <span class="text-sky-400">ℹ️ ${safeText}</span>`;
+        } else {
+          content = `${timeSpan} <span class="text-slate-300">⚡ ${safeText}</span>`;
+        }
+
+        line.innerHTML = content;
+        this.container.appendChild(line);
+        this.container.scrollTop = this.container.scrollHeight;
+      }
+    }
+  </script>
+
+  <script data-purpose="lumi-mascot-engine">
+    /**
+     * LumiMascot Controller (v2.5 Refactored)
+     * Modular, robust physics and expression engine.
+     */
+    class LumiMascot {
+      constructor() {
+        // Elements
+        this.mascot = document.getElementById('lumi-mascot');
+        this.character = document.getElementById('lumi-character');
+        this.head = document.getElementById('lumi-head');
+        this.screen = document.getElementById('lumi-screen');
+        this.pupilL = document.getElementById('pupil-left');
+        this.pupilR = document.getElementById('pupil-right');
+        this.cheekL = document.getElementById('cheek-l');
+        this.cheekR = document.getElementById('cheek-r');
+        this.curiousMark = document.getElementById('curious-mark');
+        this.sleepZzz = document.getElementById('lumi-sleep-zzz');
+        this.dizzyStars = document.getElementById('lumi-dizzy-stars');
+        this.steamL = document.getElementById('lumi-steam-l');
+        this.steamR = document.getElementById('lumi-steam-r');
+        this.tearL = document.getElementById('lumi-tear-l');
+        this.tearR = document.getElementById('lumi-tear-r');
+        this.mindblownEffect = document.getElementById('lumi-mindblown-effect');
+        this.bubble = document.getElementById('mascot-bubble');
+        this.bubbleIcon = document.getElementById('mascot-bubble-icon');
+        this.bubbleText = document.getElementById('mascot-bubble-text');
+        this.sparkles = document.getElementById('lumi-sparkles');
+        this.statusLabel = document.getElementById('lumi-status-label');
+        this.statusDot = document.getElementById('lumi-status-dot');
+        this.cursorLight = document.getElementById('cursor-light');
+        this.hudCoords = document.getElementById('hud-coords');
+
+        // State flags
+        this.currentMood = 'normal';
+        this.isSleeping = false;
+        this.isCoveringEyes = false;
+        this.isCelebrating = false;
+        this.isDizzy = false;
+        this.isAngry = false;
+        this.isDragging = false;
+        this.isSpringingBack = false;
+        this.trackingEnabled = true;
+        this.autoMotivationEnabled = true;
+
+        // Managed Timers
+        this.bubbleTimer = null;
+        this.idleTimer = null;
+        this.motivationTimer = null;
+        this.angerResetTimer = null;
+        this.dizzyTimer = null;
+        this.dizzySecondTimer = null;
+        this.springTimer = null;
+        this.moodResetTimer = null;
+        this.clickTimestamps = [];
+
+        // Drag & Drop
+        this.dragStartX = 0;
+        this.dragStartY = 0;
+        this.hasMovedDistance = 0;
+
+        // Viewport & Physics Caching
+        this.winWidth = window.innerWidth || 1024;
+        this.winHeight = window.innerHeight || 768;
+        this.mouseX = this.winWidth / 2;
+        this.mouseY = this.winHeight / 2;
+        this.targetTiltX = 0;
+        this.targetTiltY = 0;
+        this.currentTiltX = 0;
+        this.currentTiltY = 0;
+        this.centerX = 0;
+        this.centerY = 0;
+
+        this.motivationalQuotes = [
+          { text: "Grandes projetos de software são construídos com foco e pequenos passos diários!", icon: "🌱" },
+          { text: "Lembre-se de tomar água, respirar fundo e relaxar a postura por alguns instantes!", icon: "💧" },
+          { text: "Seu foco hoje está iluminando o código e os resultados do projeto!", icon: "💡" },
+          { text: "Uma mente descansada resolve bugs e desafios complexos na metade do tempo.", icon: "🧘" },
+          { text: "Cada linha de código bem pensada é um passo rumo à excelência técnica!", icon: "🚀" },
+          { text: "Automação eficiente aliada a um design inteligente: essa é a fórmula ideal!", icon: "⚡" },
+          { text: "Erros de compilação são apenas métricas para refinar a próxima versão.", icon: "📊" },
+          { text: "Você está fazendo um trabalho formidável hoje! Continue firme!", icon: "⭐" },
+          { text: "Dica de produtividade: quebre grandes tarefas em blocos executáveis de 25 min.", icon: "📁" },
+          { text: "A consistência e a curiosidade transformam esforço em legado!", icon: "🏆" },
+          { text: "Fui criado por Kayck Lima, um desenvolvedor de sistemas apaixonado por inovação!", icon: "👨‍💻" },
+          { text: "Sou um assistente para ser integrado a diversos sistemas. Posso ajudar em qualquer lugar!", icon: "🔗" },
+          { text: "Meu criador, Kayck Lima, me projetou para tornar a experiência digital mais humana e interativa!", icon: "✨" },
+          { text: "Quer conhecer quem me criou? Acesse o perfil do Kayck Lima no LinkedIn!", icon: "💼" },
+          { text: "Sou o Lumi! Fui projetado para ser integrado em dashboards, sistemas web e muito mais!", icon: "🧩" },
+          { text: "Kayck Lima me construiu com carinho usando apenas HTML, CSS e JavaScript puro!", icon: "💎" }
+        ];
+
+        this.dizzyPhrases = [
+          "Uooou! Tudo girando a 360 graus...",
+          "Minha bússola descalibrou! 💫",
+          "Onde foi parar o chão?! Alguém segura o horizonte!",
+          "Uiii... me sinto em uma centrífuga de alta rotação! 🌀",
+          "Recalibrando giroscópios internos... aguarde!",
+          "Quem apagou a gravidade?! 😵‍💫"
+        ];
+
+        this.angryPhrases = [
+          "Ei, ei! Vá com calma no botão de clique! 😤",
+          "Eu sou um assistente inteligente, não um saco de pancadas digital!",
+          "Processador esquentando a 95°C! Dá um tempo!",
+          "Se clicar mais uma vez vou entrar em modo de greve!",
+          "Calma aí! Meus sensores não foram feitos pra essa correria!"
+        ];
+
+        this.laughingPhrases = [
+          "HAHAHA! Ai meus circuitos, não aguento! 😂",
+          "Kkkkkkk! Alguém me desconecta que eu vou explodir de rir! 🤣",
+          "Socorro! Meu algoritmo de humor entrou em looping! 💥😆",
+          "Hahaha! Essa foi genial, adorei a sacada!"
+        ];
+
+        this.disappointedPhrases = [
+          "Poxa... sinceramente, esperava mais desse resultado hoje. 😞",
+          "Suspiro... meus LEDs até perderam o brilho com essa.",
+          "É sério isso? Desligando temporariamente as expectativas...",
+          "Tudo bem... vou fingir que não vi isso acontecer. 💔"
+        ];
+
+        this.indignantPhrases = [
+          "COMO ASSIM?! Isso é um absurdo no sistema! 😠",
+          "Inadmissível! Quem teve coragem de aprovar esse commit?! 😤",
+          "Não, não e NÃO! Me recuso a processar um disparate desses!",
+          "Mas onde já se viu?! Meus sensores estão indignados!"
+        ];
+
+        this.mindblownPhrases = [
+          "MINHA NOSSA SENHORA! O cérebro acabou de fritar! 🤯",
+          "EUREKA! A arquitetura inteira finalmente se encaixou com perfeição! 🌌⚡",
+          "Minha rede neural transcendeu para a quinta dimensão!",
+          "Parem tudo! Essa descoberta acabou de mudar a história! 💥"
+        ];
+
+        this.init();
+      }
+
+      init() {
+        this.updateDimensions();
+        window.addEventListener('resize', () => this.updateDimensions(), { passive: true });
+        window.addEventListener('scroll', () => this.updateCenter(), { passive: true });
+
+        // Coordinated single mousemove listener
+        window.addEventListener('mousemove', (e) => {
+          this.mouseX = e.clientX;
+          this.mouseY = e.clientY;
+          this.resetIdleTimer();
+        }, { passive: true });
+
+        // Keyboard accessibility for character
+        if (this.character) {
+          this.character.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              this.handleRapidClick();
+            }
+          });
+        }
+
+        this.setupDragAndClickInteractions();
+        this.startLoop();
+        this.resetIdleTimer();
+        this.startMotivationalCycle();
+
+        console.log("Mascote Lumi inicializado com sucesso. Modo atual: " + this.currentMood);
+      }
+
+      updateDimensions() {
+        this.winWidth = window.innerWidth || 1024;
+        this.winHeight = window.innerHeight || 768;
+        this.updateCenter();
+      }
+
+      updateCenter() {
+        const stage = document.getElementById('mascot-stage');
+        if (!stage) return;
+        const rect = stage.getBoundingClientRect();
+        this.centerX = rect.left + rect.width / 2;
+        this.centerY = rect.top + rect.height / 2 - 30;
+      }
+
+      setupDragAndClickInteractions() {
+        if (!this.character) return;
+        const char = this.character;
+
+        const onPointerMove = (e) => {
+          if (!this.isDragging) return;
+          e.preventDefault();
+          const dx = e.clientX - this.dragStartX;
+          const dy = e.clientY - this.dragStartY;
+          this.hasMovedDistance = Math.hypot(dx, dy);
+
+          const dragTilt = Math.max(-25, Math.min(25, dx * 0.15));
+          char.style.transform = `translate3d(${dx}px, ${dy}px, 0) rotate(${dragTilt}deg) scale(1.08)`;
+
+          if (this.hasMovedDistance > 18 && this.currentMood !== 'shocked') {
+            this.setMood('shocked');
+            this.say('Uooou! Segura firme!', '😲', 0);
+          }
+        };
+
+        const onPointerUp = (e) => {
+          if (!this.isDragging) return;
+          e.preventDefault();
+          this.isDragging = false;
+          char.classList.remove('mascot-dragging');
+
+          window.removeEventListener('pointermove', onPointerMove);
+          window.removeEventListener('pointerup', onPointerUp);
+          window.removeEventListener('pointercancel', onPointerUp);
+
+          try {
+            if (char.hasPointerCapture && char.hasPointerCapture(e.pointerId)) {
+              char.releasePointerCapture(e.pointerId);
+            }
+          } catch (err) {}
+
+          const wasRealDrag = this.hasMovedDistance > 18;
+          if (wasRealDrag) {
+            console.log(`Lumi solto após arrasto de ${Math.round(this.hasMovedDistance)}px. Retornando à base...`);
+            this.isSpringingBack = true;
+            char.classList.add('mascot-spring-back');
+            char.style.transition = 'transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            char.style.transform = 'translate3d(0px, 0px, 0) rotate(0deg) scale(1)';
+
+            if (this.springTimer) clearTimeout(this.springTimer);
+            this.springTimer = setTimeout(() => {
+              char.classList.remove('mascot-spring-back');
+              char.style.transition = '';
+              char.style.transform = '';
+              this.isSpringingBack = false;
+              this.currentTiltX = 0;
+              this.currentTiltY = 0;
+              if (this.mascot) {
+                this.mascot.style.animationPlayState = 'running';
+              }
+              this.triggerDizzy();
+            }, 650);
+          } else {
+            char.style.transition = 'transform 0.15s ease-out';
+            char.style.transform = 'translate3d(0px, 0px, 0) rotate(0deg) scale(1)';
+            setTimeout(() => {
+              char.style.transition = '';
+              char.style.transform = '';
+              if (this.mascot) {
+                this.mascot.style.animationPlayState = 'running';
+              }
+            }, 180);
+            this.handleRapidClick();
+          }
+        };
+
+        const onPointerDown = (e) => {
+          if (e.button !== undefined && e.button !== 0) return;
+
+          // Clear any conflicting timers
+          if (this.springTimer) clearTimeout(this.springTimer);
+          if (this.dizzyTimer) clearTimeout(this.dizzyTimer);
+          if (this.dizzySecondTimer) clearTimeout(this.dizzySecondTimer);
+          if (this.angerResetTimer) clearTimeout(this.angerResetTimer);
+          if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+
+          this.springTimer = null;
+          this.dizzyTimer = null;
+          this.dizzySecondTimer = null;
+          this.angerResetTimer = null;
+          this.moodResetTimer = null;
+
+          this.isSpringingBack = false;
+          this.isDizzy = false;
+          this.isAngry = false;
+          this.isSleeping = false;
+
+          char.classList.remove('mascot-spring-back', 'animate-bounce-mascot', 'animate-shake-head');
+          this.mascot.classList.remove(
+            'mascot-dizzy', 'mascot-angry', 'mascot-sleeping', 'mascot-laughing',
+            'mascot-disappointed', 'mascot-indignant', 'mascot-mindblown'
+          );
+
+          if (this.dizzyStars) this.dizzyStars.classList.add('hidden');
+          if (this.steamL) this.steamL.classList.add('hidden');
+          if (this.steamR) this.steamR.classList.add('hidden');
+          if (this.sleepZzz) this.sleepZzz.classList.add('hidden');
+          if (this.tearL) this.tearL.classList.add('hidden');
+          if (this.tearR) this.tearR.classList.add('hidden');
+          if (this.mindblownEffect) this.mindblownEffect.classList.add('hidden');
+
+          e.preventDefault();
+          this.isDragging = true;
+          this.hasMovedDistance = 0;
+          this.dragStartX = e.clientX;
+          this.dragStartY = e.clientY;
+
+          if (this.mascot) {
+            this.mascot.style.animationPlayState = 'paused';
+          }
+          char.classList.add('mascot-dragging');
+          char.style.transition = 'none';
+
+          try {
+            char.setPointerCapture(e.pointerId);
+          } catch (err) {}
+
+          window.addEventListener('pointermove', onPointerMove, { passive: false });
+          window.addEventListener('pointerup', onPointerUp, { passive: false });
+          window.addEventListener('pointercancel', onPointerUp, { passive: false });
+
+          this.resetIdleTimer();
+        };
+
+        char.addEventListener('pointerdown', onPointerDown);
+      }
+
+      handleRapidClick() {
+        const now = Date.now();
+        this.clickTimestamps.push(now);
+        this.clickTimestamps = this.clickTimestamps.filter(t => now - t <= 1800);
+        this.resetIdleTimer();
+
+        if (this.clickTimestamps.length >= 4) {
+          console.warn("⚠️ 4 cliques rápidos detectados! Ativando Modo Irritado do Lumi.");
+          this.triggerAngry();
+          this.clickTimestamps = [];
+          return;
+        }
+
+        const randomReplies = [
+          { text: 'Lumi pronto para ajudar!', icon: '⚡' },
+          { text: 'Olá! É ótimo ter você por aqui!', icon: '✨' },
+          { text: 'Precisa de suporte com o código ou ideias?', icon: '🤔' },
+          { text: 'Iluminação inteligente no ar!', icon: '💡' },
+          { text: 'Tudo pronto para operar em máxima velocidade!', icon: '🚀' },
+          { text: 'Fui criado por Kayck Lima. Prazer em conhecê-lo!', icon: '👨‍💻' },
+          { text: 'Sou um assistente para ser integrado a diversos sistemas!', icon: '🔗' },
+          { text: 'Conheça meu criador no LinkedIn: Kayck Lima!', icon: '💼' }
+        ];
+        const pick = randomReplies[Math.floor(Math.random() * randomReplies.length)];
+        if (!this.isAngry && !this.isDizzy) {
+          this.setMood('happy');
+          this.bounce();
+          this.say(pick.text, pick.icon, 2800);
+          if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+          this.moodResetTimer = setTimeout(() => {
+            if (this.currentMood === 'happy' && !this.isCelebrating) {
+              this.setMood('normal');
+            }
+          }, 2800);
+        }
+      }
+
+      triggerDizzy() {
+        if (this.isDragging || this.isSpringingBack) return;
+        this.isDizzy = true;
+        this.setMood('dizzy');
+        const randomDizzy = this.dizzyPhrases[Math.floor(Math.random() * this.dizzyPhrases.length)];
+        this.say(randomDizzy, '💫', 3800);
+        console.warn("😵 Lumi está tonto com estrelas girando.");
+
+        if (this.dizzyTimer) clearTimeout(this.dizzyTimer);
+        this.dizzyTimer = setTimeout(() => {
+          this.isDizzy = false;
+          if (this.currentMood === 'dizzy') {
+            this.setMood('happy');
+            this.say('Pronto! Labirintite virtual resolvida.', '✨', 2500);
+            if (this.dizzySecondTimer) clearTimeout(this.dizzySecondTimer);
+            this.dizzySecondTimer = setTimeout(() => {
+              if (this.currentMood === 'happy' && !this.isCelebrating) this.setMood('normal');
+            }, 2500);
+          }
+        }, 4000);
+      }
+
+      triggerAngry() {
+        this.isAngry = true;
+        this.setMood('angry');
+        const randomAngry = this.angryPhrases[Math.floor(Math.random() * this.angryPhrases.length)];
+        this.say(randomAngry, '😤', 3600);
+
+        if (this.angerResetTimer) clearTimeout(this.angerResetTimer);
+        this.angerResetTimer = setTimeout(() => {
+          this.isAngry = false;
+          if (this.currentMood === 'angry') {
+            this.setMood('normal');
+            this.say('Ufa... esfriando o cooler. Pronto, estou calmo de novo! 😮‍💨', '🍃', 3000);
+          }
+        }, 4200);
+      }
+
+      setMood(mood) {
+        if (!this.mascot) return;
+        const prevMood = this.currentMood;
+        this.currentMood = mood;
+        console.log(`[Lumi State] Humor: "${prevMood}" ➜ "${mood}"`);
+
+        // Cancel any pending automatic mood reset
+        if (this.moodResetTimer) {
+          clearTimeout(this.moodResetTimer);
+          this.moodResetTimer = null;
+        }
+
+        // Reset all mood classes and overlay elements
+        this.mascot.classList.remove(
+          'mascot-happy', 'mascot-curious', 'mascot-sad', 'mascot-sleeping',
+          'eyes-covered', 'mascot-celebrating', 'mascot-dizzy', 'mascot-angry',
+          'mascot-love', 'mascot-shocked', 'mascot-laughing', 'mascot-disappointed',
+          'mascot-indignant', 'mascot-mindblown'
+        );
+
+        if (this.curiousMark) this.curiousMark.classList.remove('opacity-100');
+        if (this.cheekL) this.cheekL.classList.remove('opacity-100');
+        if (this.cheekR) this.cheekR.classList.remove('opacity-100');
+        if (this.sleepZzz) this.sleepZzz.classList.add('hidden');
+        if (this.dizzyStars) this.dizzyStars.classList.add('hidden');
+        if (this.steamL) this.steamL.classList.add('hidden');
+        if (this.steamR) this.steamR.classList.add('hidden');
+        if (this.tearL) this.tearL.classList.add('hidden');
+        if (this.tearR) this.tearR.classList.add('hidden');
+        if (this.mindblownEffect) this.mindblownEffect.classList.add('hidden');
+
+        if (this.sparkles && !this.isCelebrating) {
+          this.sparkles.classList.add('hidden');
+          this.sparkles.classList.remove('flex');
+        }
+
+        this.isCoveringEyes = (mood === 'privacy');
+        this.isSleeping = (mood === 'sleeping');
+
+        if (mood === 'happy') {
+          this.mascot.classList.add('mascot-happy');
+          if (this.cheekL) this.cheekL.classList.add('opacity-100');
+          if (this.cheekR) this.cheekR.classList.add('opacity-100');
+          this.setStatus('Lumi Radiante', 'bg-sky-400');
+        } else if (mood === 'curious') {
+          this.mascot.classList.add('mascot-curious');
+          if (this.curiousMark) this.curiousMark.classList.add('opacity-100');
+          this.setStatus('Lumi Analisando...', 'bg-amber-400');
+        } else if (mood === 'sad') {
+          this.mascot.classList.add('mascot-sad');
+          this.setStatus('Lumi Desapontado', 'bg-rose-500');
+        } else if (mood === 'privacy') {
+          this.mascot.classList.add('eyes-covered');
+          this.setStatus('Modo Seguro Ativo', 'bg-purple-400');
+        } else if (mood === 'sleeping') {
+          this.mascot.classList.add('mascot-sleeping');
+          if (this.sleepZzz) this.sleepZzz.classList.remove('hidden');
+          this.setStatus('Lumi em Repouso', 'bg-slate-400');
+        } else if (mood === 'dizzy') {
+          this.mascot.classList.add('mascot-dizzy');
+          if (this.dizzyStars) this.dizzyStars.classList.remove('hidden');
+          this.setStatus('Lumi Desorientado', 'bg-yellow-400');
+        } else if (mood === 'angry') {
+          this.mascot.classList.add('mascot-angry');
+          if (this.steamL) this.steamL.classList.remove('hidden');
+          if (this.steamR) this.steamR.classList.remove('hidden');
+          this.setStatus('Lumi Irritado', 'bg-rose-600');
+        } else if (mood === 'love') {
+          this.mascot.classList.add('mascot-love');
+          if (this.cheekL) this.cheekL.classList.add('opacity-100');
+          if (this.cheekR) this.cheekR.classList.add('opacity-100');
+          this.setStatus('Lumi Encantado', 'bg-pink-400');
+        } else if (mood === 'shocked') {
+          this.mascot.classList.add('mascot-shocked');
+          this.setStatus('Lumi Surpreso!', 'bg-cyan-400');
+        } else if (mood === 'laughing') {
+          this.mascot.classList.add('mascot-laughing');
+          if (this.tearL) this.tearL.classList.remove('hidden');
+          if (this.tearR) this.tearR.classList.remove('hidden');
+          if (this.cheekL) this.cheekL.classList.add('opacity-100');
+          if (this.cheekR) this.cheekR.classList.add('opacity-100');
+          this.setStatus('Lumi Gargalhando', 'bg-amber-400');
+          const phrase = this.laughingPhrases[Math.floor(Math.random() * this.laughingPhrases.length)];
+          this.say(phrase, '😂', 3800);
+        } else if (mood === 'disappointed') {
+          this.mascot.classList.add('mascot-disappointed');
+          this.setStatus('Lumi Desapontado', 'bg-slate-400');
+          const phrase = this.disappointedPhrases[Math.floor(Math.random() * this.disappointedPhrases.length)];
+          this.say(phrase, '😞', 3800);
+        } else if (mood === 'indignant') {
+          this.mascot.classList.add('mascot-indignant');
+          this.setStatus('Lumi Indignado!', 'bg-orange-500');
+          const phrase = this.indignantPhrases[Math.floor(Math.random() * this.indignantPhrases.length)];
+          this.say(phrase, '😠', 3800);
+        } else if (mood === 'mindblown') {
+          this.mascot.classList.add('mascot-mindblown');
+          if (this.mindblownEffect) this.mindblownEffect.classList.remove('hidden');
+          this.setStatus('Mente Explodida! 🤯', 'bg-fuchsia-400');
+          const phrase = this.mindblownPhrases[Math.floor(Math.random() * this.mindblownPhrases.length)];
+          this.say(phrase, '🤯', 4200);
+        } else {
+          this.setStatus('Lumi Ativo', 'bg-emerald-400');
+        }
+      }
+
+      say(text, icon = '✨', autoHideMs = 3200) {
+        if (!this.bubble || !this.bubbleText || !this.bubbleIcon) return;
+        this.bubbleText.textContent = text;
+        this.bubbleIcon.textContent = icon;
+        this.bubble.classList.remove('opacity-0', 'translate-y-2');
+        this.bubble.classList.add('opacity-100', 'translate-y-0');
+        console.log(`[Lumi Fala] ${icon} "${text}"`);
+
+        if (this.bubbleTimer) clearTimeout(this.bubbleTimer);
+        if (autoHideMs > 0) {
+          this.bubbleTimer = setTimeout(() => {
+            if (!this.isCoveringEyes && !this.isAngry) {
+              this.bubble.classList.remove('opacity-100', 'translate-y-0');
+              this.bubble.classList.add('opacity-0', 'translate-y-2');
+            }
+          }, autoHideMs);
+        }
+      }
+
+      speakMotivationalQuote() {
+        if (this.isAngry || this.isDizzy || this.isCoveringEyes) return;
+        const randomQuote = this.motivationalQuotes[Math.floor(Math.random() * this.motivationalQuotes.length)];
+        this.setMood('happy');
+        this.bounce();
+        this.say(randomQuote.text, randomQuote.icon, 4500);
+        if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+        this.moodResetTimer = setTimeout(() => {
+          if (this.currentMood === 'happy' && !this.isCelebrating) {
+            this.setMood('normal');
+          }
+        }, 4500);
+      }
+
+      startMotivationalCycle() {
+        if (this.motivationTimer) clearInterval(this.motivationTimer);
+        this.motivationTimer = setInterval(() => {
+          if (this.autoMotivationEnabled && !this.isSleeping && !this.isAngry && !this.isDizzy && !this.isDragging) {
+            this.speakMotivationalQuote();
+          }
+        }, 30000);
+      }
+
+      bounce() {
+        if (!this.character) return;
+        this.character.classList.remove('animate-bounce-mascot');
+        void this.character.offsetWidth;
+        this.character.classList.add('animate-bounce-mascot');
+      }
+
+      shake() {
+        if (!this.character) return;
+        this.setMood('sad');
+        this.character.classList.remove('animate-shake-head');
+        void this.character.offsetWidth;
+        this.character.classList.add('animate-shake-head');
+        this.say('Ops! Algo deu errado.', '⚠️', 2500);
+        if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+        this.moodResetTimer = setTimeout(() => {
+          if (this.currentMood === 'sad') this.setMood('normal');
+        }, 2800);
+      }
+
+      celebrate() {
+        if (!this.character) return;
+        this.isCelebrating = true;
+        this.setMood('happy');
+        this.mascot.classList.add('mascot-celebrating');
+        this.bounce();
+        if (this.sparkles) {
+          this.sparkles.classList.remove('hidden');
+          this.sparkles.classList.add('flex');
+        }
+        if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+        this.moodResetTimer = setTimeout(() => {
+          this.isCelebrating = false;
+          if (this.sparkles) {
+            this.sparkles.classList.add('hidden');
+            this.sparkles.classList.remove('flex');
+          }
+          this.mascot.classList.remove('mascot-celebrating');
+          this.setMood('normal');
+        }, 3600);
+      }
+
+      setStatus(label, dotColorClass = 'bg-emerald-400') {
+        if (this.statusLabel) this.statusLabel.textContent = label;
+        if (this.statusDot) {
+          this.statusDot.className = `w-2 h-2 rounded-full ${dotColorClass} animate-pulse`;
+        }
+        const hudStatus = document.getElementById('hud-status');
+        if (hudStatus) {
+          hudStatus.textContent = `STATUS: ${label.toUpperCase()}`;
+        }
+        const hudStatusDot = document.getElementById('hud-status-dot');
+        if (hudStatusDot) {
+          hudStatusDot.className = `w-2 h-2 rounded-full ${dotColorClass} animate-ping`;
+        }
+      }
+
+      resetIdleTimer() {
+        if (this.isSleeping) {
+          this.isSleeping = false;
+          this.setMood('happy');
+          this.bounce();
+          this.say('Acordei! Vamos trabalhar!', '⚡', 2400);
+          if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
+          this.moodResetTimer = setTimeout(() => {
+            if (!this.isCelebrating && !this.isCoveringEyes && !this.isAngry && !this.isDizzy) {
+              this.setMood('normal');
+            }
+          }, 2400);
+        }
+        clearTimeout(this.idleTimer);
+        this.idleTimer = setTimeout(() => {
+          if (!this.isCoveringEyes && !this.isCelebrating && !this.isAngry && !this.isDizzy && !this.isDragging && this.currentMood === 'normal') {
+            this.setMood('sleeping');
+            this.say('Modo repouso ativado...', '💤', 2400);
+          }
+        }, 12000);
+      }
+
+      startLoop() {
+        const loop = () => {
+          // Decoupled cursor light rendering at screen refresh rate
+          if (this.cursorLight) {
+            this.cursorLight.style.transform = `translate3d(${this.mouseX}px, ${this.mouseY}px, 0) translate(-50%, -50%)`;
+          }
+
+          // Optimized coordinate display
+          if (this.hudCoords) {
+            this.hudCoords.textContent = `X: ${Math.round(this.mouseX)}px | Y: ${Math.round(this.mouseY)}px`;
+          }
+
+          if (
+            this.trackingEnabled &&
+            !this.isSleeping &&
+            !this.isCoveringEyes &&
+            !this.isDragging &&
+            !this.isSpringingBack &&
+            !this.isDizzy &&
+            !this.isAngry &&
+            this.character
+          ) {
+            const deltaX = this.mouseX - this.centerX;
+            const deltaY = this.mouseY - this.centerY;
+            const angle = Math.atan2(deltaY, deltaX);
+            const distance = Math.min(Math.hypot(deltaX, deltaY), 400);
+
+            // Eye movement calculation
+            if (this.pupilL && this.pupilR && !['happy', 'sad', 'dizzy', 'angry', 'love', 'laughing', 'disappointed'].includes(this.currentMood)) {
+              const maxEyeMove = 4.5;
+              const px = Math.cos(angle) * (distance / 400) * maxEyeMove;
+              const py = Math.sin(angle) * (distance / 400) * maxEyeMove;
+              this.pupilL.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+              this.pupilR.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+            }
+
+            // Head 3D tilt with cached viewport metrics
+            this.targetTiltX = (deltaX / this.winWidth) * 16;
+            this.targetTiltY = (deltaY / this.winHeight) * 10;
+            this.currentTiltX += (this.targetTiltX - this.currentTiltX) * 0.12;
+            this.currentTiltY += (this.targetTiltY - this.currentTiltY) * 0.12;
+            this.character.style.transform = `rotate(${this.currentTiltX}deg) translateY(${this.currentTiltY * 0.5}px)`;
+          }
+          requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+      }
+    }
+  </script>
+
+  <script data-purpose="app-initialization">
+    /**
+     * Cross-browser safe clipboard copying with execCommand fallback
+     */
+    async function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) {
+          // Fall through to fallback
+        }
+      }
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      tempArea.setAttribute('readonly', '');
+      tempArea.style.position = 'fixed';
+      tempArea.style.opacity = '0';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      const success = document.execCommand('copy');
+      document.body.removeChild(tempArea);
+      return success;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize Console Manager
+      window.lumiConsole = new LumiConsoleManager();
+
+      // 2. Instantiate Lumi
+      window.lumi = new LumiMascot();
+
+      // Mood Buttons
+      const moodButtons = document.querySelectorAll('.btn-mood');
+      moodButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mood = btn.getAttribute('data-mood');
+          if (mood && window.lumi) window.lumi.setMood(mood);
+        });
+      });
+
+      // Celebrate & Shake triggers
+      const btnCelebrate = document.getElementById('btn-trigger-celebrate');
+      if (btnCelebrate) {
+        btnCelebrate.addEventListener('click', () => {
+          if (window.lumi) {
+            window.lumi.celebrate();
+            window.lumi.say('Meta atingida! Parabéns a toda equipe!', '🎉', 3500);
+          }
+        });
+      }
+      const btnShake = document.getElementById('btn-trigger-shake');
+      if (btnShake) {
+        btnShake.addEventListener('click', () => {
+          if (window.lumi) window.lumi.shake();
+        });
+      }
+
+      // Motivational Quote Manual Trigger
+      const btnMotivation = document.getElementById('btn-trigger-motivation');
+      if (btnMotivation) {
+        btnMotivation.addEventListener('click', () => {
+          if (window.lumi) window.lumi.speakMotivationalQuote();
+        });
+      }
+
+      // Auto-Motivation Toggle
+      const toggleMotivation = document.getElementById('toggle-motivation');
+      const motivationCounter = document.getElementById('motivation-counter');
+      if (toggleMotivation) {
+        toggleMotivation.addEventListener('change', (e) => {
+          if (window.lumi) window.lumi.autoMotivationEnabled = e.target.checked;
+          if (motivationCounter) {
+            motivationCounter.textContent = e.target.checked ? 'Auto: ATIVO' : 'Auto: PAUSADO';
+          }
+          console.log("Pílulas automáticas:", e.target.checked ? "Ativadas" : "Pausadas");
+        });
+      }
+
+      // Say Message trigger
+      const btnSay = document.getElementById('btn-trigger-say');
+      const inputSay = document.getElementById('input-say-text');
+      const selectIcon = document.getElementById('select-say-icon');
+      if (btnSay && inputSay && selectIcon) {
+        const sendSayMessage = () => {
+          const text = inputSay.value.trim() || 'Olá!';
+          const icon = selectIcon.value;
+          if (window.lumi) window.lumi.say(text, icon, 3500);
+        };
+        btnSay.addEventListener('click', sendSayMessage);
+        inputSay.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            sendSayMessage();
+          }
+        });
+      }
+
+      // Tracking Toggle
+      const toggleTracking = document.getElementById('toggle-tracking');
+      if (toggleTracking) {
+        toggleTracking.addEventListener('change', (e) => {
+          if (window.lumi) {
+            window.lumi.trackingEnabled = e.target.checked;
+            if (!e.target.checked) {
+              if (window.lumi.character) window.lumi.character.style.transform = 'none';
+              if (window.lumi.pupilL) window.lumi.pupilL.style.transform = 'translate3d(0, 0, 0)';
+              if (window.lumi.pupilR) window.lumi.pupilR.style.transform = 'translate3d(0, 0, 0)';
+            }
+          }
+          console.log("Rastreamento ocular:", e.target.checked ? "Ativo" : "Desativado");
+        });
+      }
+
+      // Theme Manager
+      window.themeMode = 'dark';
+      window.toggleThemeMode = function(explicitTheme) {
+        const html = document.documentElement;
+        if (explicitTheme) {
+          window.themeMode = explicitTheme;
+        } else {
+          window.themeMode = window.themeMode === 'dark' ? 'light' : 'dark';
+        }
+
+        const isLight = window.themeMode === 'light';
+        if (isLight) {
+          html.classList.add('light-mode');
+          html.classList.remove('dark');
+        } else {
+          html.classList.remove('light-mode');
+          html.classList.add('dark');
+        }
+
+        const themeIcon = document.getElementById('theme-toggle-icon');
+        const themeText = document.getElementById('theme-toggle-text');
+        const showcaseIcon = document.getElementById('showcase-theme-icon');
+
+        if (themeIcon) themeIcon.textContent = isLight ? '🌙' : '☀️';
+        if (themeText) themeText.textContent = isLight ? 'Modo Escuro' : 'Modo Claro';
+        if (showcaseIcon) showcaseIcon.textContent = isLight ? '🌙' : '☀️';
+
+        console.log(`[Tema] ${isLight ? 'Modo Claro ativado' : 'Modo Escuro ativado'}.`);
+        if (window.lumi) {
+          if (isLight) {
+            window.lumi.say('Modo Claro ativado! Ambiente radiante e nítido. ☀️', '💡', 2800);
+          } else {
+            window.lumi.say('Modo Escuro ativado! Conforto visual garantido. 🌙', '✨', 2800);
+          }
+        }
+      };
+
+      const btnToggleTheme = document.getElementById('btn-toggle-theme');
+      if (btnToggleTheme) {
+        btnToggleTheme.addEventListener('click', () => window.toggleThemeMode());
+      }
+
+      const btnShowcaseTheme = document.getElementById('btn-showcase-theme');
+      if (btnShowcaseTheme) {
+        btnShowcaseTheme.addEventListener('click', () => window.toggleThemeMode());
+      }
+
+      // LED Palette Buttons
+      const themeButtons = document.querySelectorAll('.theme-btn');
+      themeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const theme = btn.getAttribute('data-theme');
+          if (theme === 'blue') {
+            document.documentElement.removeAttribute('data-theme');
+          } else if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+          }
+          themeButtons.forEach(b => b.classList.remove('ring-2', 'ring-white'));
+          btn.classList.add('ring-2', 'ring-white');
+          console.log(`Paleta LED alterada para: ${theme}`);
+        });
+      });
+
+      // Showcase Mode
+      window.toggleShowcaseMode = function(activate) {
+        const body = document.getElementById('app-body');
+        if (!body) return;
+        const isCurrentlyActive = body.classList.contains('showcase-mode');
+        const shouldActivate = activate !== undefined ? activate : !isCurrentlyActive;
+
+        if (shouldActivate) {
+          body.classList.add('showcase-mode');
+          console.log("🌟 Modo Exibição Apenas ATIVADO. Pressione ESC ou o botão flutuante para retornar.");
+          if (window.lumi) {
+            window.lumi.say("Modo Exibição iniciado! Interaja comigo livremente.", "✨", 3500);
+            window.lumi.bounce();
+          }
+        } else {
+          body.classList.remove('showcase-mode');
+          console.log("💻 Retornado ao Modo Laboratório Completo.");
+        }
+
+        setTimeout(() => {
+          if (window.lumi) window.lumi.updateCenter();
+        }, 120);
+      };
+
+      const btnEnterShowcase = document.getElementById('btn-enter-showcase');
+      if (btnEnterShowcase) {
+        btnEnterShowcase.addEventListener('click', () => window.toggleShowcaseMode(true));
+      }
+
+      const btnExitShowcase = document.getElementById('showcase-exit-btn');
+      if (btnExitShowcase) {
+        btnExitShowcase.addEventListener('click', () => window.toggleShowcaseMode(false));
+      }
+
+      document.querySelectorAll('.showcase-btn[data-mood]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mood = btn.getAttribute('data-mood');
+          if (window.lumi && mood) window.lumi.setMood(mood);
+        });
+      });
+
+      const btnShowcaseCelebrate = document.getElementById('btn-showcase-celebrate');
+      if (btnShowcaseCelebrate) {
+        btnShowcaseCelebrate.addEventListener('click', () => {
+          if (window.lumi) {
+            window.lumi.celebrate();
+            window.lumi.say("Showcase incrível! Parabéns!", "🎉", 3000);
+          }
+        });
+      }
+
+      const btnShowcaseQuote = document.getElementById('btn-showcase-quote');
+      if (btnShowcaseQuote) {
+        btnShowcaseQuote.addEventListener('click', () => {
+          if (window.lumi) window.lumi.speakMotivationalQuote();
+        });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const body = document.getElementById('app-body');
+          if (body && body.classList.contains('showcase-mode')) {
+            window.toggleShowcaseMode(false);
+          }
+          const codeModal = document.getElementById('code-modal');
+          if (codeModal && !codeModal.classList.contains('hidden')) {
+            codeModal.classList.add('hidden');
+            codeModal.classList.remove('flex');
+          }
+        }
+      });
+
+      // Console Header Button
+      const btnToggleConsole = document.getElementById('btn-toggle-console');
+      const consoleSection = document.getElementById('console-section');
+      if (btnToggleConsole && consoleSection) {
+        btnToggleConsole.addEventListener('click', () => {
+          consoleSection.scrollIntoView({ behavior: 'smooth' });
+          if (window.lumiConsole && window.lumiConsole.isMinimized) {
+            window.lumiConsole.toggleMinimize();
+          }
+          const consoleInput = document.getElementById('console-input');
+          if (consoleInput) consoleInput.focus();
+        });
+      }
+
+      // Code Export Modal Handlers
+      const btnOpenModal = document.getElementById('btn-open-code-modal');
+      const btnCloseModal = document.getElementById('btn-close-code-modal');
+      const btnCloseModalFooter = document.getElementById('btn-close-modal-footer');
+      const codeModal = document.getElementById('code-modal');
+      const snippetHtml = document.getElementById('code-snippet-html');
+      const btnCopyCode = document.getElementById('btn-copy-code');
+      const copyText = document.getElementById('copy-text');
+      const mascotStageEl = document.getElementById('mascot-stage');
+
+      if (snippetHtml && mascotStageEl) {
+        snippetHtml.textContent = mascotStageEl.outerHTML.trim();
+      }
+
+      function toggleModal(show) {
+        if (!codeModal) return;
+        codeModal.classList.toggle('hidden', !show);
+        codeModal.classList.toggle('flex', show);
+      }
+
+      if (btnOpenModal) btnOpenModal.addEventListener('click', () => toggleModal(true));
+      if (btnCloseModal) btnCloseModal.addEventListener('click', () => toggleModal(false));
+      if (btnCloseModalFooter) btnCloseModalFooter.addEventListener('click', () => toggleModal(false));
+      if (codeModal) {
+        codeModal.addEventListener('click', (e) => {
+          if (e.target === codeModal) toggleModal(false);
+        });
+      }
+
+      if (btnCopyCode && snippetHtml) {
+        btnCopyCode.addEventListener('click', async () => {
+          const code = snippetHtml.textContent;
+          const success = await copyToClipboard(code);
+          if (success) {
+            copyText.textContent = 'Copiado!';
+            console.log("Código HTML do Mascote Lumi copiado para o clipboard com sucesso.");
+            setTimeout(() => { copyText.textContent = 'Copiar Código'; }, 2000);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
