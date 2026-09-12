@@ -691,31 +691,101 @@
     body.showcase-mode #showcase-quickbar {
       display: flex !important;
     }
+    /* Top HUD in Showcase Mode - Responsive layout preventing collisions */
     body.showcase-mode #stage-hud-left {
-      top: 1rem !important;
-      left: 1rem !important;
+      top: 0.75rem !important;
+      left: 0.75rem !important;
+      right: auto !important;
+      max-width: calc(100vw - 110px) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.35rem !important;
+      z-index: 40 !important;
     }
     body.showcase-mode #stage-hud-right {
-      top: 1rem !important;
-      right: 1rem !important;
+      top: 0.75rem !important;
+      right: 0.75rem !important;
+      z-index: 45 !important;
+    }
+    body.showcase-mode #showcase-hud-badge {
+      font-size: 9px !important;
+      padding: 0.2rem 0.55rem !important;
+    }
+    body.showcase-mode #hud-status-wrapper {
+      font-size: 9px !important;
+      padding: 0.2rem 0.55rem !important;
+      max-width: 100% !important;
+    }
+    body.showcase-mode #hud-status {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      max-width: calc(100vw - 150px) !important;
+    }
+    body.showcase-mode #showcase-exit-btn {
+      padding: 0.35rem 0.65rem !important;
+      font-size: 11px !important;
+      white-space: nowrap !important;
     }
     @media (min-width: 640px) {
       body.showcase-mode #stage-hud-left {
         top: 1.5rem !important;
         left: 1.5rem !important;
+        max-width: none !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
       }
       body.showcase-mode #stage-hud-right {
         top: 1.5rem !important;
         right: 1.5rem !important;
       }
+      body.showcase-mode #showcase-hud-badge {
+        font-size: 11px !important;
+        padding: 0.35rem 0.75rem !important;
+      }
+      body.showcase-mode #hud-status-wrapper {
+        font-size: 11px !important;
+        padding: 0.35rem 0.75rem !important;
+      }
+      body.showcase-mode #hud-status {
+        max-width: none !important;
+      }
+      body.showcase-mode #showcase-exit-btn {
+        padding: 0.375rem 0.875rem !important;
+        font-size: 12px !important;
+      }
     }
 
-    /* Mobile Responsive Optimizations */
-    @media (max-width: 640px) {
-      .speech-bubble {
-        max-width: 88vw;
-        white-space: normal;
-        text-align: center;
+    /* Speech Bubble Responsiveness & Dynamic Line Wrapping */
+    .speech-bubble {
+      bottom: calc(100% + 14px) !important;
+      top: auto !important;
+      white-space: normal !important;
+      word-break: normal;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      max-width: min(88vw, 380px) !important;
+      width: max-content;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    #mascot-bubble-text {
+      white-space: normal !important;
+      word-break: normal;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      text-align: center;
+      max-width: min(76vw, 320px);
+    }
+
+    /* Vertical Safe Zone on Mobile (Lab / Console Mode) */
+    @media (max-width: 639px) {
+      body:not(.showcase-mode) #stage-section {
+        min-height: 520px !important;
+        padding-top: 4.5rem !important;
+        padding-bottom: 1.25rem !important;
       }
     }
 
@@ -1147,7 +1217,7 @@
 
   <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-5 lg:gap-6 items-stretch justify-center">
     <!-- LEFT STAGE: The Mascot Alive Display -->
-    <section aria-label="Visualizador do Mascote Lumi" class="flex-1 min-h-[420px] sm:min-h-[480px] bg-slate-950/70 backdrop-blur-xl rounded-3xl border border-slate-800 p-4 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl transition-all duration-300" id="stage-section">
+    <section aria-label="Visualizador do Mascote Lumi" class="flex-1 min-h-[520px] sm:min-h-[500px] lg:min-h-[540px] bg-slate-950/70 backdrop-blur-xl rounded-3xl border border-slate-800 pt-16 pb-5 px-4 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl transition-all duration-300" id="stage-section">
       <div class="absolute inset-0 bg-gradient-to-b from-brand-500/5 via-transparent to-brand-500/10 pointer-events-none"></div>
 
       <!-- Stage HUD Top Bar: Left Indicators -->
@@ -1176,14 +1246,14 @@
       </div>
 
       <!-- Mascot Stage Container -->
-      <div class="relative flex flex-col items-center justify-center select-none z-20 my-auto py-6" id="mascot-stage">
+      <div class="relative flex flex-col items-center justify-center select-none z-20 my-auto py-4 sm:py-6" id="mascot-stage">
         <div class="mascot-container relative flex flex-col items-center animate-float-slow" id="lumi-mascot">
           <!-- Interactive Mascot Character Shell -->
           <div aria-label="Mascote Interativo Lumi" class="mascot-draggable relative flex flex-col items-center p-3 select-none touch-none cursor-grab" id="lumi-character" role="button" tabindex="0" title="Arraste o Lumi e solte-o para vê-lo tonto!">
             <!-- Speech Bubble / Thought Badge -->
-            <div aria-live="polite" class="speech-bubble absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 translate-y-2 transition-all duration-300 pointer-events-none bg-slate-800/95 text-slate-200 text-xs font-semibold py-2 px-4 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-2.5 backdrop-blur-md whitespace-nowrap z-40" id="mascot-bubble">
-              <span class="text-base shrink-0" id="mascot-bubble-icon">✨</span>
-              <span class="leading-snug" id="mascot-bubble-text">Olá! Eu sou o Lumi, criado por Kayck Lima. Seu assistente virtual inteligente!</span>
+            <div aria-live="polite" class="speech-bubble absolute left-1/2 -translate-x-1/2 opacity-0 translate-y-2 transition-all duration-300 pointer-events-none bg-slate-800/95 text-slate-200 text-xs font-semibold py-2 px-3.5 sm:px-4 rounded-2xl shadow-2xl border border-slate-700 flex items-center justify-center gap-2 sm:gap-2.5 backdrop-blur-md z-40" id="mascot-bubble">
+              <span class="text-base shrink-0 select-none" id="mascot-bubble-icon">✨</span>
+              <span class="leading-relaxed text-center" id="mascot-bubble-text">Olá! Eu sou o Lumi, criado por Kayck Lima. Seu assistente virtual inteligente!</span>
             </div>
 
             <!-- Sleep Zzz Particles -->
