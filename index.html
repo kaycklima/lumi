@@ -1924,6 +1924,7 @@
         this.dizzySecondTimer = null;
         this.springTimer = null;
         this.moodResetTimer = null;
+        this.celebrationTimer = null;
         this.clickTimestamps = [];
 
         // Drag & Drop
@@ -2145,6 +2146,7 @@
           this.isDizzy = false;
           this.isAngry = false;
           this.isSleeping = false;
+          if (this.isCelebrating) this.stopCelebrating();
 
           char.classList.remove('mascot-spring-back', 'animate-bounce-mascot', 'animate-shake-head');
           this.mascot.classList.remove(
@@ -2263,6 +2265,10 @@
 
       setMood(mood) {
         if (!this.mascot) return;
+        if (this.isCelebrating) {
+          this.stopCelebrating();
+        }
+
         const prevMood = this.currentMood;
         this.currentMood = mood;
         console.log(`[Lumi State] Humor: "${prevMood}" ➜ "${mood}"`);
@@ -2292,7 +2298,7 @@
         if (this.tearR) this.tearR.classList.add('hidden');
         if (this.mindblownEffect) this.mindblownEffect.classList.add('hidden');
 
-        if (this.sparkles && !this.isCelebrating) {
+        if (this.sparkles) {
           this.sparkles.classList.add('hidden');
           this.sparkles.classList.remove('flex');
         }
@@ -2428,25 +2434,40 @@
         }, 2800);
       }
 
+      stopCelebrating() {
+        if (this.celebrationTimer) {
+          clearTimeout(this.celebrationTimer);
+          this.celebrationTimer = null;
+        }
+        this.isCelebrating = false;
+        if (this.sparkles) {
+          this.sparkles.classList.add('hidden');
+          this.sparkles.classList.remove('flex');
+        }
+        if (this.mascot) {
+          this.mascot.classList.remove('mascot-celebrating');
+        }
+      }
+
       celebrate() {
         if (!this.character) return;
-        this.isCelebrating = true;
+        this.stopCelebrating();
         this.setMood('happy');
+
+        this.isCelebrating = true;
         this.mascot.classList.add('mascot-celebrating');
         this.bounce();
         if (this.sparkles) {
           this.sparkles.classList.remove('hidden');
           this.sparkles.classList.add('flex');
         }
-        if (this.moodResetTimer) clearTimeout(this.moodResetTimer);
-        this.moodResetTimer = setTimeout(() => {
-          this.isCelebrating = false;
-          if (this.sparkles) {
-            this.sparkles.classList.add('hidden');
-            this.sparkles.classList.remove('flex');
+        this.say('Viva! Sucesso absoluto! 🎉', '🥳', 3600);
+
+        this.celebrationTimer = setTimeout(() => {
+          this.stopCelebrating();
+          if (this.currentMood === 'happy') {
+            this.setMood('normal');
           }
-          this.mascot.classList.remove('mascot-celebrating');
-          this.setMood('normal');
         }, 3600);
       }
 
