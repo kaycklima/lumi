@@ -790,6 +790,25 @@
       }
     }
 
+    /* Accessible Toggle Switch Controls (Dark & Light) */
+    #toggle-motivation ~ div,
+    #toggle-tracking ~ div {
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    #toggle-motivation ~ div::after,
+    #toggle-tracking ~ div::after {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+    #toggle-motivation:checked ~ div {
+      background-color: #059669;
+    }
+    #toggle-tracking:checked ~ div {
+      background-color: var(--brand-600);
+    }
+    .peer:focus-visible ~ div {
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 1), 0 0 0 4px var(--brand-500) !important;
+    }
+
     /* =========================================================
        LIGHT MODE INTEGRATION (SOPHISTICATED LIGHT THEME)
        ========================================================= */
@@ -1004,8 +1023,20 @@
     html.light-mode aside .text-slate-500 {
       color: #64748b !important;
     }
+    /* Toggle switch tracks in light mode */
     html.light-mode aside .bg-slate-800 {
-      background-color: #e2e8f0 !important;
+      background-color: #cbd5e1 !important;
+    }
+    html.light-mode #toggle-motivation:checked ~ div,
+    html.light-mode input.peer:checked ~ .peer-checked\:bg-emerald-600 {
+      background-color: #059669 !important;
+    }
+    html.light-mode #toggle-tracking:checked ~ div,
+    html.light-mode input.peer:checked ~ .peer-checked\:bg-brand-600 {
+      background-color: var(--brand-600) !important;
+    }
+    html.light-mode .peer:focus-visible ~ div {
+      box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--brand-500) !important;
     }
 
     /* Console REPL Section in Light Mode */
@@ -1504,7 +1535,7 @@
             <span>Frases Automáticas (a cada 30s)</span>
             <label class="relative inline-flex items-center cursor-pointer">
               <input checked class="sr-only peer" id="toggle-motivation" type="checkbox" aria-label="Alternar frases motivacionais automáticas"/>
-              <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+              <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer transition-colors duration-200 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
             </label>
           </div>
         </div>
@@ -1568,7 +1599,7 @@
           <span>Rastrear Cursor</span>
           <label class="relative inline-flex items-center cursor-pointer">
             <input checked class="sr-only peer" id="toggle-tracking" type="checkbox" aria-label="Alternar rastreamento do cursor do mouse"/>
-            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-600"></div>
+            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer transition-colors duration-200 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-600"></div>
           </label>
         </div>
       </div>
