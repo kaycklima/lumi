@@ -1,4 +1,4 @@
-# 💡 Mascote Lumi — Assistente Virtual Interativo
+# <img src="favicon.svg" width="34" height="34" alt="Lumi" style="vertical-align: middle;" /> Mascote Lumi — Assistente Virtual Interativo
 
 <div align="center">
 
